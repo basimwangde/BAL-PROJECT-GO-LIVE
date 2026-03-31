@@ -1,6 +1,26 @@
 <div class="kiosk" role="presentation">
   <div class="kiosk__ambient" aria-hidden="true"></div>
 
+  @if (showPartnerCornerLogos()) {
+    <div class="kiosk__brand-corner">
+      <img
+        class="kiosk__brand-img"
+        [src]="data.branding.logos.baramati"
+        [alt]="data.branding.customerName + ' logo'"
+        width="160"
+        height="48"
+      />
+      <span class="kiosk__brand-divider" aria-hidden="true"></span>
+      <img
+        class="kiosk__brand-img"
+        [src]="data.branding.logos.percipere"
+        [alt]="data.branding.partnerName + ' logo'"
+        width="160"
+        height="48"
+      />
+    </div>
+  }
+
   @for (section of data.sections; track section.id; let i = $index) {
     @if (sectionIndex() === i) {
       <div class="kiosk__slide" [style.--slide-ms]="data.autoplay.transitionMs + 'ms'">
@@ -38,10 +58,10 @@
   }
 
   <nav class="kiosk__nav" aria-label="Slide navigation">
-    <button type="button" class="nav__arrow" (click)="prev()" aria-label="Previous chapter">
+    <button type="button" class="nav__arrow" (click)="prev()" aria-label="Previous slide">
       <span aria-hidden="true">‹</span>
     </button>
-    <div class="nav__dots" role="tablist" aria-label="Chapters">
+    <div class="nav__dots" role="tablist" aria-label="Slides">
       @for (s of data.sections; track s.id; let di = $index) {
         <button
           type="button"
@@ -51,16 +71,16 @@
           role="tab"
           [attr.aria-selected]="sectionIndex() === di"
           [title]="s.title"
-          [attr.aria-label]="'Chapter ' + (di + 1) + ': ' + s.title"
+          [attr.aria-label]="'Slide ' + (di + 1) + ': ' + s.title"
         ></button>
       }
     </div>
-    <button type="button" class="nav__arrow" (click)="next()" aria-label="Next chapter">
+    <button type="button" class="nav__arrow" (click)="next()" aria-label="Next slide">
       <span aria-hidden="true">›</span>
     </button>
   </nav>
 
   <span class="sr-only">
-    {{ data.branding.projectName }} showcase. Chapter {{ sectionIndex() + 1 }} of {{ sectionCount() }}.
+    {{ data.branding.projectName }} showcase. Slide {{ sectionIndex() + 1 }} of {{ sectionCount() }}.
   </span>
 </div>

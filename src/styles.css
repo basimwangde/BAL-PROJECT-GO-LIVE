@@ -47,12 +47,13 @@
   --small: clamp(13px, 1vw, 17px);
 }
 
-html,
-body {
+html {
   height: 100%;
 }
 
 body {
+  min-height: 100%;
+  min-height: 100dvh;
   margin: 0;
   color: var(--text);
   font-family: var(--font-sans);
@@ -63,6 +64,39 @@ body {
     linear-gradient(168deg, var(--bg-page) 0%, var(--bg-mid) 45%, var(--bg-deep) 100%);
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * Portrait kiosks & 4×6-style frames (width : height ≈ 2 : 3).
+ * Typography and spacing track vmin so the UI scales with the shorter side.
+ */
+@media (max-aspect-ratio: 3/4) {
+  :root {
+    --pad: clamp(12px, 3.4vmin, 40px);
+    --grid-gap: clamp(12px, 2.8vmin, 28px);
+    --h1: clamp(1.75rem, 7.2vmin, 3.75rem);
+    --h2: clamp(1.45rem, 5.8vmin, 2.85rem);
+    --h3: clamp(1.15rem, 4.2vmin, 2rem);
+    --body: clamp(0.9rem, 2.9vmin, 1.35rem);
+    --small: clamp(0.68rem, 2.2vmin, 0.95rem);
+    --radius-xl: clamp(18px, 4vmin, 28px);
+    --radius-lg: clamp(14px, 3.2vmin, 22px);
+    --radius-md: clamp(10px, 2.4vmin, 16px);
+  }
+
+  .story-kicker {
+    letter-spacing: 0.16em;
+  }
+}
+
+@media (max-aspect-ratio: 2/3) {
+  :root {
+    --pad: clamp(8px, 3vmin, 32px);
+    --h1: clamp(1.55rem, 6.5vmin, 3.2rem);
+    --h2: clamp(1.25rem, 5.2vmin, 2.5rem);
+    --body: clamp(0.85rem, 2.7vmin, 1.2rem);
+    --small: clamp(0.62rem, 2vmin, 0.88rem);
+  }
 }
 
 *,

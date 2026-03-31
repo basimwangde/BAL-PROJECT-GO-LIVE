@@ -31,7 +31,22 @@ export interface DisplayConfig {
     };
   };
   sections: DisplaySection[];
-  transformationSnapshot: Array<{ title: string; items: string[] }>;
+  /** S/4 vs ECC — key highlights shown as staggered “bubbles” on the snapshot slide */
+  s4HighlightsSection: {
+    slideKicker: string;
+    title: string;
+    lead: string;
+    /** Delay between each bubble entrance (ms) */
+    itemStaggerMs: number;
+    /**
+     * Must stay in sync with `.bubble` pop animation length in
+     * `transformation-snapshot.component.css` (snapBubblePop).
+     */
+    bubbleEntranceDurationMs: number;
+    /** Autoplay waits this long after the last bubble finishes entering */
+    holdAfterLastBubbleMs: number;
+    items: string[];
+  };
   timeline: Array<{ label: string; dateHint?: string }>;
   technical: {
     headline: string;
@@ -41,7 +56,16 @@ export interface DisplayConfig {
   };
   customObjectStats: ProjectStat[];
   dataImpact: Array<{ label: string; from: string; to: string }>;
+  /** Flat list: customer, implementation partner, then specialist partners (used by Ecosystem slide). */
   partners: string[];
+  ecosystemSlide: {
+    slideKicker: string;
+    title: string;
+    lead: string;
+    facilitatorCaption: string;
+    hubCaption: string;
+    satelliteCaption: string;
+  };
   gallery: {
     rotateEveryMs: number;
     images: GalleryImage[];
@@ -49,6 +73,36 @@ export interface DisplayConfig {
 }
 
 const DEFAULT_DURATION = 10_000;
+
+const s4HighlightsSection: DisplayConfig['s4HighlightsSection'] = {
+  slideKicker: 'Capability spotlight',
+  title: 'New on S/4HANA',
+  lead:
+    'Key structural changes and capabilities now live on SAP S/4HANA — areas that were missing, limited, or materially different on SAP ECC.',
+  itemStaggerMs: 1000,
+  bubbleEntranceDurationMs: 800,
+  holdAfterLastBubbleMs: 3000,
+  items: [
+    'Re-org from 15 Company Codes to 7 Company Codes',
+    'Project System',
+    'Plant Maintenance',
+    'COPA (Product & Customer)',
+    'Costing',
+    'MRP',
+    'Batch Management',
+    'CPP Revamp',
+    'Sales Rebate',
+    'Credit Management',
+    'New Service Procurement'
+  ]
+};
+
+const snapshotSlideDurationMs =
+  s4HighlightsSection.items.length > 0
+    ? (s4HighlightsSection.items.length - 1) * s4HighlightsSection.itemStaggerMs +
+      s4HighlightsSection.bubbleEntranceDurationMs +
+      s4HighlightsSection.holdAfterLastBubbleMs
+    : DEFAULT_DURATION;
 
 export const PROJECT_DISPLAY_DATA: DisplayConfig = {
   autoplay: {
@@ -80,23 +134,16 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
   },
   sections: [
     { id: 'hero', title: 'The story opens', durationMs: 12_000 },
-    { id: 'snapshot', title: 'What we delivered', durationMs: 10_500 },
+    { id: 'snapshot', title: 'S/4HANA highlights', durationMs: snapshotSlideDurationMs },
+    { id: 'partners', title: 'Ecosystem', durationMs: 13_800 },
     { id: 'timeline', title: 'The journey', durationMs: 10_500 },
     { id: 'technical', title: 'Technical core', durationMs: 10_500 },
     { id: 'customObjects', title: 'Scale of change', durationMs: 11_000 },
     { id: 'dataImpact', title: 'Data impact', durationMs: 10_500 },
-    { id: 'partners', title: 'Ecosystem', durationMs: 9_500 },
     { id: 'gallery', title: 'Moments that matter', durationMs: 11_000 },
     { id: 'closing', title: 'Applause', durationMs: 10_500 }
   ],
-  transformationSnapshot: [
-    { title: 'New modules', items: ['Project System', 'Plant Maintenance'] },
-    { title: 'New processes live', items: ['MRP', 'Batch Management', 'Shelf Life'] },
-    { title: 'Re-org executed', items: ['12 company codes merged into 6'] },
-    { title: 'New requirements shipped', items: ['CPP Revamp', 'Sales Rebate', 'Credit Management'] },
-    { title: 'Services', items: ['New Service Procurement'] },
-    { title: 'Finance & insight', items: ['COPA (product & customer)', 'Costing'] }
-  ],
+  s4HighlightsSection,
   timeline: [
     { label: 'Kick-off', dateHint: 'Jun 2025' },
     { label: 'Design / blueprint' },
@@ -150,8 +197,19 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     'Procol',
     'BestMix',
     'SBI Bank',
-    'IDBI Bank'
+    'IDBI Bank',
+    'Cashflo',
+    'Power BI'
   ],
+  ecosystemSlide: {
+    slideKicker: 'Partner network',
+    title: 'Ecosystem',
+    lead:
+      'Baramati Agro anchors the program at the center — specialist partners orbit the transformation — with Percipere Consulting orchestrating delivery and integration across the network.',
+    facilitatorCaption: 'Implementation partner',
+    hubCaption: 'Customer · program anchor',
+    satelliteCaption: 'Specialist partners'
+  },
   gallery: {
     rotateEveryMs: 2800,
     images: [

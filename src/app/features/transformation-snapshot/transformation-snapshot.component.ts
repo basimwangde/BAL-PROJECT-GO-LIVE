@@ -9,8 +9,4 @@ import { PROJECT_DISPLAY_DATA } from '../../core/data/project-display.data';
 })
 export class TransformationSnapshotComponent {
   readonly d = PROJECT_DISPLAY_DATA;
-
-  padTwo(n: number): string {
-    return String(n + 1).padStart(2, '0');
-  }
 }

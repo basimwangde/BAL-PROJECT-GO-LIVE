@@ -1,13 +1,15 @@
 .snap {
   min-height: 100%;
   padding: var(--pad);
-  display: grid;
-  gap: clamp(26px, 3vw, 44px);
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 28px);
+  align-items: stretch;
 }
 
 .snap__intro {
-  max-width: min(900px, 92vw);
+  max-width: min(920px, 92vw);
+  flex-shrink: 0;
 }
 
 .snap__title {
@@ -25,90 +27,242 @@
   font-size: var(--body);
   color: var(--cream-muted);
   line-height: 1.45;
-  max-width: 54ch;
+  max-width: 58ch;
 }
 
-.snap__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--grid-gap);
+.snap__stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(12px, 2vw, 28px) 0;
 }
 
-@media (max-width: 1200px) {
-  .snap__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 700px) {
-  .snap__grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.tile {
+.snap__bubbles {
   position: relative;
-  padding: clamp(22px, 2.2vw, 34px);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--line);
-  background: linear-gradient(155deg, #ffffff, var(--panel-muted));
-  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  align-items: flex-start;
+  gap: clamp(14px, 1.8vw, 22px);
+  max-width: min(1120px, 96vw);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.bubble {
+  --bubble-delay: 0ms;
+  --tilt: 0deg;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  max-width: min(100%, 400px);
+  perspective: 600px;
+  opacity: 0;
+  transform: scale(0.45) translateY(36px) rotateX(12deg);
+  animation: snapBubblePop 0.8s cubic-bezier(0.34, 1.45, 0.52, 1) var(--bubble-delay) forwards;
+}
+
+.bubble:nth-child(odd) {
+  --tilt: -2.2deg;
+}
+
+.bubble:nth-child(even) {
+  --tilt: 1.8deg;
+}
+
+.bubble:nth-child(3n) {
+  --tilt: 0.6deg;
+}
+
+.bubble--hero {
+  max-width: min(100%, min(540px, 94vw));
+}
+
+.bubble__inner {
+  position: relative;
+  padding: clamp(14px, 1.6vw, 20px) clamp(22px, 2.4vw, 32px);
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--accent-soft) 55%, #ffffff 45%);
+  background:
+    linear-gradient(155deg, #ffffff 0%, #f0faf3 38%, color-mix(in srgb, var(--panel-muted) 70%, #e8f5ec) 100%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0));
+  background-blend-mode: normal;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.95) inset,
+    0 2px 0 rgba(255, 255, 255, 0.65) inset,
+    0 12px 36px rgba(27, 127, 74, 0.14),
+    0 4px 14px rgba(15, 45, 28, 0.06),
+    0 0 48px -6px rgba(42, 157, 98, 0.35);
+  transform: rotate(var(--tilt));
+  transform-origin: center center;
   overflow: hidden;
 }
 
-.tile::before {
-  content: '';
+.bubble--hero .bubble__inner {
+  border-radius: var(--radius-lg);
+  padding: clamp(16px, 1.8vw, 22px) clamp(24px, 2.8vw, 36px);
+}
+
+.bubble__shine {
   position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--copper));
-  opacity: 0.75;
+  inset: -40% -30%;
+  background: linear-gradient(
+    118deg,
+    transparent 36%,
+    rgba(255, 255, 255, 0.55) 48%,
+    rgba(200, 255, 220, 0.35) 52%,
+    transparent 64%
+  );
+  transform: translateX(-60%) rotate(12deg);
+  animation: snapShineSweep 4.5s ease-in-out infinite;
+  pointer-events: none;
 }
 
-.tile__meta {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 18px;
+.bubble:nth-child(2n) .bubble__shine {
+  animation-delay: 1.1s;
+  animation-duration: 5.2s;
 }
 
-.tile__index {
-  font-family: var(--font-display);
-  font-size: clamp(34px, 3vw, 48px);
+.bubble:nth-child(3n) .bubble__shine {
+  animation-delay: 2s;
+}
+
+@keyframes snapShineSweep {
+  0%,
+  15% {
+    transform: translateX(-70%) rotate(12deg);
+  }
+  45%,
+  55% {
+    transform: translateX(55%) rotate(12deg);
+  }
+  85%,
+  100% {
+    transform: translateX(-70%) rotate(12deg);
+  }
+}
+
+.bubble__text {
+  position: relative;
+  z-index: 1;
+  display: block;
+  font-family: var(--font-sans);
+  font-size: clamp(17px, 1.42vw, 21px);
   font-weight: 600;
-  color: color-mix(in srgb, var(--accent) 45%, var(--text-muted));
-  line-height: 1;
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+  color: var(--text-bright);
+  text-align: center;
+  text-wrap: balance;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Keeps copy readable when the gloss sweep crosses the label */
+  text-shadow:
+    0 0 12px #ffffff,
+    0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.tile__title {
-  margin: 0;
-  font-size: clamp(20px, 1.75vw, 30px);
-  font-weight: 600;
-  letter-spacing: -0.01em;
+@keyframes snapBubblePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.45) translateY(36px) rotateX(14deg);
+  }
+  52% {
+    opacity: 1;
+    transform: scale(1.06) translateY(-6px) rotateX(0deg);
+  }
+  72% {
+    transform: scale(0.97) translateY(2px) rotateX(0deg);
+  }
+  88% {
+    transform: scale(1.02) translateY(-1px) rotateX(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0) rotateX(0deg);
+  }
 }
 
-.tile__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 12px;
+@media (prefers-reduced-motion: no-preference) {
+  .bubble__inner {
+    animation: snapBubbleFloat 4.2s ease-in-out calc(var(--bubble-delay) + 0.8s) infinite;
+  }
+
+  @keyframes snapBubbleFloat {
+    0%,
+    100% {
+      transform: rotate(var(--tilt)) translateY(0) scale(1);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.95) inset,
+        0 2px 0 rgba(255, 255, 255, 0.65) inset,
+        0 12px 36px rgba(27, 127, 74, 0.14),
+        0 4px 14px rgba(15, 45, 28, 0.06),
+        0 0 48px -6px rgba(42, 157, 98, 0.35);
+    }
+    50% {
+      transform: rotate(var(--tilt)) translateY(-7px) scale(1.025);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.95) inset,
+        0 2px 0 rgba(255, 255, 255, 0.65) inset,
+        0 18px 44px rgba(27, 127, 74, 0.2),
+        0 8px 20px rgba(15, 45, 28, 0.07),
+        0 0 56px -4px rgba(42, 157, 98, 0.48);
+    }
+  }
 }
 
-.tile__list li {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 12px;
-  align-items: start;
-  font-size: clamp(16px, 1.2vw, 22px);
-  line-height: 1.3;
-  color: var(--cream-soft);
+@media (prefers-reduced-motion: reduce) {
+  .bubble {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .bubble__inner {
+    animation: none !important;
+  }
+
+  .bubble__shine {
+    animation: none;
+    transform: none;
+    opacity: 0.25;
+  }
 }
 
-.tile__dot {
-  width: 8px;
-  height: 8px;
-  margin-top: 0.5em;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--accent) 80%, var(--copper) 20%);
-  box-shadow: 0 0 0 6px var(--glow);
+@media (max-width: 520px) {
+  .bubble {
+    max-width: 100%;
+  }
+
+  .bubble:not(.bubble--hero) .bubble__inner {
+    border-radius: var(--radius-lg);
+  }
+}
+
+@media (max-aspect-ratio: 3/4) {
+  .snap {
+    gap: clamp(10px, 2.2vmin, 20px);
+  }
+
+  .snap__stage {
+    padding: clamp(6px, 1.5vmin, 18px) 0;
+  }
+
+  .snap__bubbles {
+    gap: clamp(7px, 1.8vmin, 14px);
+  }
+
+  .bubble__inner {
+    padding: clamp(10px, 1.4vmin, 16px) clamp(14px, 2vmin, 22px);
+  }
+
+  .bubble__text {
+    font-size: clamp(14px, 2.8vmin, 18px);
+  }
 }

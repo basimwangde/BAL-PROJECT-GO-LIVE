@@ -36,6 +36,12 @@ export class EventDisplayComponent implements OnDestroy {
     () => this.data.sections[this.sectionIndex()]!.id as DisplaySectionId
   );
 
+  /** Partner logos on interior slides only (not opening hero or closing). */
+  readonly showPartnerCornerLogos = computed(() => {
+    const id = this.activeSectionId();
+    return id !== 'hero' && id !== 'closing';
+  });
+
   private timer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
