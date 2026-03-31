@@ -1,0 +1,27 @@
+<section class="snap" aria-label="Transformation delivery snapshot">
+  <div class="snap__intro">
+    <p class="story-kicker">Chapter 2</p>
+    <h2 class="snap__title story-display">What we delivered</h2>
+    <div class="gold-rule snap__rule"></div>
+    <p class="snap__lead">
+      A concise snapshot of modules, processes, and outcomes — written for distance viewing, tuned for
+      leadership storytelling.
+    </p>
+  </div>
+
+  <div class="snap__grid">
+    @for (card of d.transformationSnapshot; track card.title; let n = $index) {
+      <article class="tile">
+        <div class="tile__meta">
+          <span class="tile__index">{{ padTwo(n) }}</span>
+          <h3 class="tile__title">{{ card.title }}</h3>
+        </div>
+        <ul class="tile__list">
+          @for (line of card.items; track line) {
+            <li><span class="tile__dot" aria-hidden="true"></span>{{ line }}</li>
+          }
+        </ul>
+      </article>
+    }
+  </div>
+</section>

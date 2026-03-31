@@ -1,0 +1,66 @@
+<div class="kiosk" role="presentation">
+  <div class="kiosk__ambient" aria-hidden="true"></div>
+
+  @for (section of data.sections; track section.id; let i = $index) {
+    @if (sectionIndex() === i) {
+      <div class="kiosk__slide" [style.--slide-ms]="data.autoplay.transitionMs + 'ms'">
+        @switch (section.id) {
+          @case ('hero') {
+            <app-hero-section />
+          }
+          @case ('snapshot') {
+            <app-transformation-snapshot />
+          }
+          @case ('timeline') {
+            <app-timeline-section [isActive]="isActive('timeline')" />
+          }
+          @case ('technical') {
+            <app-technical-section />
+          }
+          @case ('customObjects') {
+            <app-custom-objects-section [isActive]="isActive('customObjects')" />
+          }
+          @case ('dataImpact') {
+            <app-data-impact-section />
+          }
+          @case ('partners') {
+            <app-partner-ecosystem-section />
+          }
+          @case ('gallery') {
+            <app-photo-gallery-section [isActive]="isActive('gallery')" />
+          }
+          @case ('closing') {
+            <app-closing-section />
+          }
+        }
+      </div>
+    }
+  }
+
+  <nav class="kiosk__nav" aria-label="Slide navigation">
+    <button type="button" class="nav__arrow" (click)="prev()" aria-label="Previous chapter">
+      <span aria-hidden="true">‹</span>
+    </button>
+    <div class="nav__dots" role="tablist" aria-label="Chapters">
+      @for (s of data.sections; track s.id; let di = $index) {
+        <button
+          type="button"
+          class="nav__dot"
+          [class.nav__dot--active]="sectionIndex() === di"
+          (click)="goTo(di)"
+          role="tab"
+          [attr.aria-selected]="sectionIndex() === di"
+          [title]="s.title"
+          [attr.aria-label]="'Chapter ' + (di + 1) + ': ' + s.title"
+        ></button>
+      }
+    </div>
+    <button type="button" class="nav__arrow" (click)="next()" aria-label="Next chapter">
+      <span aria-hidden="true">›</span>
+    </button>
+  </nav>
+
+  <span class="sr-only">
+    {{ data.branding.projectName }} showcase. Chapter {{ sectionIndex() + 1 }} of {{ sectionCount() }}.
+  </span>
+</div>

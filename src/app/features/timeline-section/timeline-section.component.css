@@ -1,0 +1,127 @@
+.tl {
+  min-height: 100%;
+  padding: var(--pad);
+  display: grid;
+  gap: clamp(20px, 2.4vw, 36px);
+  align-content: start;
+}
+
+.tl__title {
+  margin: 8px 0 0;
+  font-size: var(--h2);
+}
+
+.tl__rule {
+  margin: clamp(14px, 1.6vw, 22px) 0;
+  max-width: 240px;
+}
+
+.tl__lead {
+  margin: 0;
+  font-size: var(--body);
+  color: var(--cream-muted);
+  max-width: 50ch;
+}
+
+.tl__track {
+  list-style: none;
+  margin: clamp(10px, 1.2vw, 18px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 14px);
+  position: relative;
+}
+
+@media (max-width: 1200px) {
+  .tl__track {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .tl__track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.tl__track::before {
+  content: '';
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 28px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(27, 127, 74, 0.28) 12%,
+    rgba(74, 143, 106, 0.22) 50%,
+    rgba(27, 127, 74, 0.28) 88%,
+    transparent
+  );
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.tl__track--on::before {
+  animation: tl-line 1.35s cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
+}
+
+@keyframes tl-line {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.milestone {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  text-align: center;
+  padding-top: 6px;
+  opacity: 0.28;
+  transform: translateY(16px);
+}
+
+.tl__track--on .milestone {
+  animation: mile 0.7s cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
+  animation-delay: calc(0.07s * var(--i));
+}
+
+@keyframes mile {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.milestone__num {
+  width: clamp(52px, 5vw, 68px);
+  height: clamp(52px, 5vw, 68px);
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 600;
+  color: var(--accent);
+  background: linear-gradient(145deg, #ffffff, var(--panel-muted));
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  box-shadow: 0 12px 28px rgba(27, 127, 74, 0.1);
+}
+
+.milestone__label {
+  font-size: clamp(14px, 1.15vw, 19px);
+  font-weight: 600;
+  line-height: 1.18;
+  color: var(--cream-soft);
+}
+
+.milestone__hint {
+  margin-top: 6px;
+  font-size: var(--small);
+  color: var(--cream-muted);
+}

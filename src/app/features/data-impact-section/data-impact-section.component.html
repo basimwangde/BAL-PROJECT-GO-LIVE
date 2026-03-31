@@ -1,0 +1,27 @@
+<section class="impact" aria-label="Data simplification impact">
+  <div class="impact__intro">
+    <p class="story-kicker">Chapter 6</p>
+    <h2 class="impact__title story-display">Data simplification</h2>
+    <div class="gold-rule impact__rule"></div>
+    <p class="impact__lead">Fewer, cleaner master records — measurable reduction across Materials, Customer, and Vendor.</p>
+  </div>
+
+  <div class="impact__grid">
+    @for (row of d.dataImpact; track row.label) {
+      <article class="panel glass">
+        <div class="panel__label">{{ row.label }}</div>
+        <div class="panel__row">
+          <div class="panel__box">
+            <div class="panel__hint">Before · ECC</div>
+            <div class="panel__val story-display">{{ row.from }}</div>
+          </div>
+          <div class="panel__mid" aria-hidden="true"><span class="panel__chev"></span></div>
+          <div class="panel__box panel__box--after">
+            <div class="panel__hint">After · S/4</div>
+            <div class="panel__val story-display">{{ row.to }}</div>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+</section>

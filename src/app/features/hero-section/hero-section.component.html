@@ -1,0 +1,85 @@
+<section class="hero" aria-label="Project Parivartan opening story">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="hero__fields"></div>
+    <svg class="hero__leaves" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <linearGradient id="heroLeafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1b7f4a" stop-opacity="0.11" />
+          <stop offset="100%" stop-color="#2a9d62" stop-opacity="0.06" />
+        </linearGradient>
+      </defs>
+      <g fill="url(#heroLeafGrad)">
+        <path d="M80 420c48-92 72-195 28-285 36 78 44 168 22 258 32-85 98-148 188-162-88 52-138 128-138 218z" />
+        <path d="M1020 400c-52-88-68-198-24-288-40 75-50 172-26 260-30-80-95-140-180-150 90 48 142 120 142 198z" />
+        <path d="M560 460c-22-70-18-152 8-220-8 62 4 138 40 200 18-55 58-98 108-110-50 32-78 82-78 140z" />
+        <path d="M320 200c35-55 88-92 150-100-40 48-58 110-48 175 28-40 72-66 122-68-55 28-88 75-95 135z" />
+        <path d="M900 180c-32-52-82-88-142-98 38 46 56 106 48 168-26-38-68-64-118-68 52 26 84 72 92 130z" />
+      </g>
+      <g fill="none" stroke="#1b7f4a" stroke-opacity="0.14" stroke-width="1.2">
+        <path d="M0 360c200-24 400-8 600 12s400 28 600 4" />
+        <path d="M0 392c180-18 380-22 560-6s380 22 560 10" />
+        <path d="M0 424c220-10 420 6 620 18s380 14 580-2" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero__frame">
+    <div class="hero__grain" aria-hidden="true"></div>
+
+    <div class="hero__chapter story-kicker">{{ d.branding.heroEyebrow }}</div>
+
+    <h1 class="hero__program story-display">{{ d.branding.projectName }}</h1>
+    <p class="hero__transform story-display">{{ d.branding.transformationWord }}</p>
+
+    <div class="hero__gold gold-rule"></div>
+
+    <div class="hero__partners">
+      <div class="hero__brand-card glass">
+        <div class="hero__logo-slot">
+          <app-branded-image
+            [src]="d.branding.logos.baramati"
+            alt="Baramati Agro logo"
+            imgClass="hero__logo-img"
+            fit="contain"
+            [fallbackTitle]="d.branding.customerName"
+            fallbackSubtitle="Expected: src/assets/logos/baramati-logo.png"
+          />
+        </div>
+        <span class="hero__brand-name">{{ d.branding.customerName }}</span>
+      </div>
+      <div class="hero__and" aria-hidden="true">and</div>
+      <div class="hero__brand-card glass">
+        <div class="hero__logo-slot">
+          <app-branded-image
+            [src]="d.branding.logos.percipere"
+            alt="Percipere Consulting logo"
+            imgClass="hero__logo-img"
+            fit="contain"
+            [fallbackTitle]="d.branding.partnerName"
+            fallbackSubtitle="Expected: src/assets/logos/percipere-logo.png"
+          />
+        </div>
+        <span class="hero__brand-name">{{ d.branding.partnerName }}</span>
+      </div>
+    </div>
+
+    <div class="hero__migration-block glass">
+      <p class="hero__migration-label story-kicker">The move</p>
+      <p class="hero__migration-primary story-display">{{ d.branding.migrationPrimary }}</p>
+      <p class="hero__migration-secondary">{{ d.branding.migrationSecondary }}</p>
+    </div>
+
+    <div class="hero__dates">
+      <article class="date-card glass">
+        <p class="date-card__label">{{ d.branding.kickoffDateLabel }}</p>
+        <p class="date-card__value story-display">{{ d.branding.kickoffDateDisplay }}</p>
+      </article>
+      <article class="date-card glass date-card--live">
+        <p class="date-card__label">{{ d.branding.goLiveDateLabel }}</p>
+        <p class="date-card__value story-display">{{ d.branding.goLiveDateDisplay }}</p>
+      </article>
+    </div>
+
+    <p class="hero__tagline">{{ d.branding.heroTagline }}</p>
+  </div>
+</section>

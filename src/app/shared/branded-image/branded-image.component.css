@@ -1,0 +1,34 @@
+:host {
+  display: contents;
+}
+
+.branded-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: clamp(16px, 2vw, 28px);
+  background: linear-gradient(145deg, var(--panel-muted), #ffffff);
+  border: 1px dashed color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: var(--radius-md, 16px);
+  min-height: 100%;
+  min-width: 0;
+}
+
+.branded-fallback__title {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 1.6vw, 28px);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.branded-fallback__sub {
+  font-family: var(--font-sans);
+  font-size: clamp(13px, 1vw, 16px);
+  color: var(--text-muted);
+  max-width: 36ch;
+  line-height: 1.35;
+}

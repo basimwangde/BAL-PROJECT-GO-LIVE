@@ -1,0 +1,22 @@
+<section class="tl" aria-label="Project journey timeline">
+  <div class="tl__intro">
+    <p class="story-kicker">Chapter 3</p>
+    <h2 class="tl__title story-display">The journey</h2>
+    <div class="gold-rule tl__rule"></div>
+    <p class="tl__lead">Eight beats from kick-off to go-live — paced like a narrative, not a checklist.</p>
+  </div>
+
+  <ol class="tl__track" [class.tl__track--on]="isActive()">
+    @for (m of d.timeline; track m.label; let i = $index) {
+      <li class="milestone" [style.--i]="i">
+        <div class="milestone__num">{{ i + 1 }}</div>
+        <div class="milestone__body">
+          <div class="milestone__label">{{ m.label }}</div>
+          @if (m.dateHint) {
+            <div class="milestone__hint">{{ m.dateHint }}</div>
+          }
+        </div>
+      </li>
+    }
+  </ol>
+</section>

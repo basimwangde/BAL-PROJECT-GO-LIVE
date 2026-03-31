@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Event photo placeholder 8">
+  <rect width="1600" height="900" fill="#141e2a"/>
+  <path d="M0 600 Q400 500 800 620 T1600 560 L1600 900 L0 900 Z" fill="rgba(124,155,212,0.12)"/>
+  <text x="800" y="440" text-anchor="middle" fill="rgba(232,238,245,0.3)" font-family="system-ui, sans-serif" font-size="42" letter-spacing="0.35em">PHOTO 8</text>
+</svg>

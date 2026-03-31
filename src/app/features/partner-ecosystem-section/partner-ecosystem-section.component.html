@@ -1,0 +1,24 @@
+<section class="eco" aria-label="Partner ecosystem">
+  <div class="eco__intro">
+    <p class="story-kicker">Chapter 7</p>
+    <h2 class="eco__title story-display">Ecosystem</h2>
+    <div class="gold-rule eco__rule"></div>
+    <p class="eco__lead">The village that ran the program — customer, SI, and specialists in one orbit.</p>
+  </div>
+
+  <div class="eco__orbit glass">
+    <div class="eco__ring" aria-hidden="true"></div>
+    <div class="eco__grid">
+      @for (p of d.partners; track p; let i = $index) {
+        <div class="eco__card" [class.eco__card--hero]="i === 0 || i === 1">
+          <span class="eco__name">{{ p }}</span>
+          @if (i === 0) {
+            <span class="eco__role">Customer</span>
+          } @else if (i === 1) {
+            <span class="eco__role">Implementation</span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>

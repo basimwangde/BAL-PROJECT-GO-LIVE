@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Event photo placeholder 2">
+  <defs>
+    <linearGradient id="p2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e2433"/>
+      <stop offset="100%" stop-color="#2d4a62"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#p2)"/>
+  <text x="800" y="450" text-anchor="middle" fill="rgba(232,238,245,0.32)" font-family="system-ui, sans-serif" font-size="42" letter-spacing="0.35em">PHOTO 2</text>
+</svg>

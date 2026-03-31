@@ -1,0 +1,117 @@
+.kiosk {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  padding-bottom: 88px;
+}
+
+.kiosk__ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 520px at 10% 92%, var(--glow), transparent 52%),
+    radial-gradient(760px 480px at 92% 88%, rgba(42, 157, 98, 0.06), transparent 50%);
+  opacity: 1;
+}
+
+.kiosk__slide {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  animation: kioskIn var(--slide-ms, 820ms) cubic-bezier(0.2, 0.85, 0.2, 1) both;
+}
+
+@keyframes kioskIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.kiosk__nav {
+  position: fixed;
+  z-index: 20;
+  left: 50%;
+  bottom: clamp(16px, 2.2vw, 28px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 22px);
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: linear-gradient(145deg, #ffffff 0%, var(--panel-muted) 100%);
+  box-shadow: var(--shadow-soft), 0 1px 0 #fff inset;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.nav__arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+  background: #ffffff;
+  color: var(--accent);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    color 0.2s ease;
+}
+
+.nav__arrow:hover {
+  background: var(--glow);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  color: var(--copper);
+  transform: scale(1.04);
+}
+
+.nav__arrow:active {
+  transform: scale(0.97);
+}
+
+.nav__dots {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+}
+
+.nav__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--accent) 8%, #fff 92%);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.nav__dot:hover {
+  transform: scale(1.15);
+  background: var(--glow);
+}
+
+.nav__dot--active {
+  background: linear-gradient(145deg, var(--accent-soft), var(--accent));
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  transform: scale(1.28);
+}

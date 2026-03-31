@@ -1,0 +1,21 @@
+@if (!failed()) {
+  <img
+    [src]="src()"
+    [alt]="alt()"
+    [class]="imgClass()"
+    [style.object-fit]="fit()"
+    (error)="onError()"
+    loading="lazy"
+    decoding="async"
+  />
+} @else {
+  <div
+    class="branded-fallback"
+    [class]="imgClass()"
+    role="img"
+    [attr.aria-label]="alt()"
+  >
+    <span class="branded-fallback__title">{{ fallbackTitle() || alt() }}</span>
+    <span class="branded-fallback__sub">{{ fallbackSubtitle() }}</span>
+  </div>
+}

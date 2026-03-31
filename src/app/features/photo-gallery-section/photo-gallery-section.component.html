@@ -1,0 +1,49 @@
+<section class="gal" aria-label="Project photo gallery">
+  <div class="gal__intro">
+    <p class="story-kicker">Chapter 8</p>
+    <h2 class="gal__title story-display">Moments on the journey</h2>
+    <div class="gold-rule gal__rule"></div>
+  </div>
+
+  @if (d.images.length) {
+    <div class="gal__layout">
+      <figure class="gal__side glass">
+        <app-branded-image
+          [src]="d.images[prev()].src"
+          [alt]="d.images[prev()].alt"
+          imgClass="gal__img gal__img--side"
+          fit="cover"
+          [fallbackTitle]="'Photo ' + (prev() + 1)"
+          fallbackSubtitle="Add JPG/PNG to src/assets/project/"
+        />
+      </figure>
+
+      <figure class="gal__hero glass">
+        <app-branded-image
+          [src]="d.images[index()].src"
+          [alt]="d.images[index()].alt"
+          imgClass="gal__img gal__img--hero"
+          fit="cover"
+          [fallbackTitle]="d.images[index()].caption || d.images[index()].alt"
+          fallbackSubtitle="Replace with your event photography"
+        />
+        @if (d.images[index()].caption) {
+          <figcaption class="gal__cap">{{ d.images[index()].caption }}</figcaption>
+        }
+      </figure>
+
+      <figure class="gal__side glass">
+        <app-branded-image
+          [src]="d.images[next()].src"
+          [alt]="d.images[next()].alt"
+          imgClass="gal__img gal__img--side"
+          fit="cover"
+          [fallbackTitle]="'Photo ' + (next() + 1)"
+          fallbackSubtitle="Add JPG/PNG to src/assets/project/"
+        />
+      </figure>
+    </div>
+  } @else {
+    <p class="gal__empty">Add photos under <code>src/assets/project/</code> and list them in the display config.</p>
+  }
+</section>
