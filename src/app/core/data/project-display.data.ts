@@ -52,6 +52,10 @@ export interface DisplayConfig {
   timeline: Array<{ label: string; dateHint?: string; summary?: string }>;
   customObjectStats: ProjectStat[];
   dataImpact: DataImpactRow[];
+  /** Data simplification slide — spotlight rotation timing */
+  dataImpactSection: {
+    rotateEveryMs: number;
+  };
   /** Program outcomes — slide after hero (all KPIs visible, staggered entrance) */
   keyHighlightsSection: {
     slideKicker: string;
@@ -134,6 +138,63 @@ const keyHighlightsSlideDurationMs =
       KEY_HIGHLIGHT_HOLD_AFTER_MS
     : DEFAULT_DURATION;
 
+const DATA_IMPACT_ROTATE_MS = 4_200;
+const DATA_IMPACT_HOLD_AFTER_MS = 4_500;
+
+const DATA_IMPACT_ROWS: DataImpactRow[] = [
+  {
+    label: 'Customer master',
+    from: '225K',
+    to: '160K',
+    eccRecords: 225_000,
+    s4Records: 160_000,
+    icon: 'customer'
+  },
+  {
+    label: 'Material master',
+    from: '85K',
+    to: '35K',
+    eccRecords: 85_000,
+    s4Records: 35_000,
+    icon: 'material'
+  },
+  {
+    label: 'Vendor master',
+    from: '321K',
+    to: '152K',
+    eccRecords: 321_000,
+    s4Records: 152_000,
+    icon: 'vendor'
+  },
+  {
+    label: 'G/L accounts',
+    from: '2K',
+    to: '1K',
+    eccRecords: 2_000,
+    s4Records: 1_000,
+    icon: 'material'
+  },
+  {
+    label: 'Bill of material (BoM)',
+    from: '6.5K',
+    to: '2.5K',
+    eccRecords: 6_500,
+    s4Records: 2_500,
+    icon: 'material'
+  },
+  {
+    label: 'Routing',
+    from: '60K',
+    to: '8K',
+    eccRecords: 60_000,
+    s4Records: 8_000,
+    icon: 'material'
+  }
+];
+
+const dataImpactSlideDurationMs =
+  DATA_IMPACT_ROWS.length * DATA_IMPACT_ROTATE_MS + DATA_IMPACT_HOLD_AFTER_MS;
+
 export const PROJECT_DISPLAY_DATA: DisplayConfig = {
   autoplay: {
     enabled: true,
@@ -157,9 +218,9 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     goLiveDateDisplay: '1 April 2026',
     /** Logos under `src/assets/logos/` (PNG + program mark as JPG) */
     logos: {
-      baramati: '/assets/logos/baramati-logo.png',
-      percipere: '/assets/logos/percipere-logo.png',
-      parivartan: '/assets/logos/project-parivartan-logo.jpg'
+      baramati: 'assets/logos/baramati-logo.png',
+      percipere: 'assets/logos/percipere-logo.png',
+      parivartan: 'assets/logos/project-parivartan-logo.jpg'
     }
   },
   sections: [
@@ -169,7 +230,7 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     { id: 'partners', title: 'Ecosystem', durationMs: 13_800 },
     { id: 'timeline', title: 'The journey', durationMs: 10_500 },
     { id: 'customObjects', title: 'Scale of change', durationMs: 11_000 },
-    { id: 'dataImpact', title: 'Data simplification', durationMs: 10_500 },
+    { id: 'dataImpact', title: 'Data simplification', durationMs: dataImpactSlideDurationMs },
     { id: 'gallery', title: 'Moments that matter', durationMs: 11_000 },
     { id: 'closing', title: 'Applause', durationMs: 10_500 }
   ],
@@ -223,34 +284,13 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     { label: 'Transaction code', value: 1593, icon: 'transaction' },
     { label: 'Database table', value: 1158, icon: 'table' },
     { label: 'Smart Form', value: 286, icon: 'smartForm' },
-    { label: 'Grand total', value: 10880, icon: 'grandTotal' }
+    { label: 'RFC', value: 232, icon: 'rfc' },
+    { label: 'Grand total', value: 11_112, icon: 'grandTotal' }
   ],
-  dataImpact: [
-    {
-      label: 'Customer master',
-      from: '2.25 lacs (ECC)',
-      to: '1.60 lacs (S/4)',
-      eccRecords: 225_000,
-      s4Records: 160_000,
-      icon: 'customer'
-    },
-    {
-      label: 'Material master',
-      from: '85K (ECC)',
-      to: '35K (S/4)',
-      eccRecords: 85_000,
-      s4Records: 35_000,
-      icon: 'material'
-    },
-    {
-      label: 'Vendor master',
-      from: '3.21 lacs (ECC)',
-      to: '1.52 lacs (S/4)',
-      eccRecords: 321_000,
-      s4Records: 152_000,
-      icon: 'vendor'
-    }
-  ],
+  dataImpact: DATA_IMPACT_ROWS,
+  dataImpactSection: {
+    rotateEveryMs: DATA_IMPACT_ROTATE_MS
+  },
   partners: [
     'Baramati Agro',
     'Percipere Consulting',
@@ -281,14 +321,15 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
   gallery: {
     rotateEveryMs: 4000,
     images: [
-      { src: '/assets/project/photo-1.jpg', alt: 'Project photo 1' },
-      { src: '/assets/project/photo-2.jpg', alt: 'Project photo 2' },
-      { src: '/assets/project/photo-3.jpg', alt: 'Project photo 3' },
-      { src: '/assets/project/photo-4.jpg', alt: 'Project photo 4' },
-      { src: '/assets/project/photo-5.jpg', alt: 'Project photo 5' },
-      { src: '/assets/project/photo-6.jpg', alt: 'Project photo 6' },
-      { src: '/assets/project/photo-7.jpg', alt: 'Project photo 7' },
-      { src: '/assets/project/photo-8.jpg', alt: 'Project photo 8' }
+      { src: 'assets/project/photo-1.jpg', alt: 'Project photo 1' },
+      { src: 'assets/project/photo-2.jpg', alt: 'Project photo 2' },
+      { src: 'assets/project/photo-3.jpg', alt: 'Project photo 3' },
+      { src: 'assets/project/photo-4.jpg', alt: 'Project photo 4' },
+      { src: 'assets/project/photo-5.jpg', alt: 'Project photo 5' },
+      { src: 'assets/project/photo-6.png', alt: 'Project photo 6' },
+      { src: 'assets/project/photo-7.png', alt: 'Project photo 7' },
+      { src: 'assets/project/photo-8.jpeg', alt: 'Project photo 8' },
+      { src: 'assets/project/photo-9.jpeg', alt: 'Project photo 9' }
     ]
   }
 };

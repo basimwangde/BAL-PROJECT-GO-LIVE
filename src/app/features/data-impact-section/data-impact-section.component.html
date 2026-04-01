@@ -9,77 +9,54 @@
     </p>
   </div>
 
-  <div class="impact__panel">
-    <div class="impact__grid">
-      @for (row of d.dataImpact; track row.label; let i = $index) {
-        <article class="dcard" [style.--di]="i">
-          <div class="dcard__accent" aria-hidden="true"></div>
-          <header class="dcard__head">
-            <div class="dcard__icon" aria-hidden="true">
-              @switch (row.icon) {
-                @case ('customer') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
-                  </svg>
-                }
-                @case ('material') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
-                    <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
-                  </svg>
-                }
-                @case ('vendor') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                    <path d="M9 22V12h6v10" />
-                  </svg>
-                }
+  @if (rows().length) {
+    <ul class="impact__grid" role="list" aria-label="Data simplification KPIs">
+      @for (row of rows(); track $index; let i = $index) {
+        <li class="impact__item" [style.--ki]="i">
+          <div class="impact__icon" aria-hidden="true">
+            @switch (row.icon) {
+              @case ('customer') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M22 21v-2a4 4 0 00-3-3.87" />
+                  <path d="M16 3.13a4 4 0 010 7.75" />
+                </svg>
               }
-            </div>
-            <div class="dcard__titles">
-              <h3 class="dcard__label">{{ row.label }}</h3>
-              <p class="dcard__sub">ECC baseline → S/4HANA target</p>
-            </div>
-            <div class="dcard__badge" aria-label="Record reduction versus ECC">
-              <span class="dcard__badge-val kpi-num">−{{ reductionPercent(row) }}%</span>
-              <span class="dcard__badge-hint">fewer records</span>
-            </div>
-          </header>
-
-          <div class="viz" role="group" [attr.aria-label]="row.label + ' comparison'">
-            <div class="viz__lane">
-              <div class="viz__lane-head">
-                <span class="viz__erp viz__erp--ecc">SAP ECC</span>
-                <span class="viz__amount viz__amount--ecc">{{ row.from }}</span>
-              </div>
-              <div class="viz__track" aria-hidden="true">
-                <div class="viz__fill viz__fill--ecc"></div>
-              </div>
-            </div>
-
-            <div class="viz__connector" aria-hidden="true">
-              <span class="viz__connector-chev"></span>
-            </div>
-
-            <div class="viz__lane">
-              <div class="viz__lane-head">
-                <span class="viz__erp viz__erp--s4">SAP S/4HANA</span>
-                <span class="viz__amount viz__amount--s4 kpi-num">{{ row.to }}</span>
-              </div>
-              <div class="viz__track viz__track--s4" aria-hidden="true">
-                <div class="viz__fill viz__fill--s4" [style.width.%]="s4BarPercent(row)"></div>
-              </div>
-              <div class="viz__scale" aria-hidden="true">
-                <span>0</span>
-                <span>Same scale as ECC bar</span>
-                <span>100%</span>
-              </div>
-            </div>
+              @case ('vendor') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 7l9-4 9 4-9 4-9-4z" />
+                  <path d="M3 7v10l9 4 9-4V7" />
+                  <path d="M12 11v10" />
+                </svg>
+              }
+              @default {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 7h16" />
+                  <path d="M7 4v16" />
+                  <path d="M12 4v16" />
+                  <path d="M17 4v16" />
+                  <path d="M4 17h16" />
+                </svg>
+              }
+            }
           </div>
-        </article>
+          <h3 class="impact__item-title">{{ row.label }}</h3>
+
+          <div class="impact__transition" aria-label="Transition from ECC to S/4HANA">
+            <div class="impact__transition-head" aria-hidden="true">
+              <span class="impact__transition-label">ECC</span>
+              <span class="impact__transition-label">S/4HANA</span>
+            </div>
+
+            <p class="impact__transition-kpi" aria-label="ECC {{ row.from }} to S/4HANA {{ row.to }}">
+              <span class="impact__transition-kpi-part impact__transition-kpi-part--ecc kpi-num">{{ row.from }}</span>
+              <span class="impact__transition-kpi-arrow kpi-num" aria-hidden="true">→</span>
+              <span class="impact__transition-kpi-part impact__transition-kpi-part--s4 kpi-num">{{ row.to }}</span>
+            </p>
+          </div>
+        </li>
       }
-    </div>
-  </div>
+    </ul>
+  }
 </section>

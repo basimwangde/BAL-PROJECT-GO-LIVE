@@ -4,14 +4,14 @@
     [alt]="alt()"
     [class]="imgClass()"
     [style.object-fit]="fit()"
+    (load)="onLoad($event)"
     (error)="onError()"
-    loading="lazy"
+    [attr.loading]="loading()"
     decoding="async"
   />
 } @else {
   <div
-    class="branded-fallback"
-    [class]="imgClass()"
+    [class]="'branded-fallback ' + imgClass()"
     role="img"
     [attr.aria-label]="alt()"
   >

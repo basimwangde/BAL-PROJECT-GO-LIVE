@@ -165,10 +165,11 @@
 }
 
 .stat__label {
-  font-size: clamp(14px, 1.15vw, 18px);
-  color: var(--cream-soft);
-  font-weight: 600;
-  line-height: 1.25;
+  font-size: clamp(1.12rem, 2vmin + 0.72rem, 1.65rem);
+  color: var(--text-bright);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
 }
 
 .stat__chip {
@@ -246,7 +247,7 @@
 }
 
 .stat--total .stat__label {
-  font-size: clamp(17px, 1.45vw, 22px);
+  font-size: clamp(1.22rem, 2.2vmin + 0.8rem, 1.85rem);
 }
 
 .stat--total .stat__value {

@@ -22,14 +22,16 @@
           <span aria-hidden="true">‹</span>
         </button>
 
-        <figure class="gal__frame glass">
+        <figure class="gal__frame glass" [style.--gal-frame-ratio]="frameRatioCss()">
           @for (idx of [index()]; track idx) {
             @if (images()[idx]; as img) {
               <app-branded-image
                 [src]="img.src"
                 [alt]="img.alt"
                 imgClass="gal__img"
-                fit="cover"
+                fit="contain"
+                loading="eager"
+                (loaded)="onImageLoad($event)"
                 [fallbackTitle]="img.alt"
                 fallbackSubtitle="Add this file under src/assets/project/"
               />

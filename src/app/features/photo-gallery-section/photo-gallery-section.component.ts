@@ -6,7 +6,7 @@ import { PROJECT_DISPLAY_DATA } from '../../core/data/project-display.data';
 import type { GalleryImage } from '../../core/models/gallery-image.model';
 import { BrandedImageComponent } from '../../shared/branded-image/branded-image.component';
 
-const MANIFEST_URL = '/assets/project/gallery-manifest.json';
+const MANIFEST_URL = 'assets/project/gallery-manifest.json';
 
 type ManifestEntry = string | { file: string; alt?: string };
 
@@ -27,6 +27,8 @@ export class PhotoGallerySectionComponent {
   readonly images = signal<GalleryImage[]>([]);
   readonly index = signal(0);
 
+  private readonly ratiosBySrc = signal<Record<string, number>>({});
+
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
   readonly slideLabel = computed(() => {
@@ -35,6 +37,27 @@ export class PhotoGallerySectionComponent {
       return '';
     }
     return `Image ${this.index() + 1} of ${n}`;
+  });
+
+  readonly frameRatioCss = computed(() => {
+    const imgs = this.images();
+    const idx = this.index();
+    const src = imgs[idx]?.src;
+    if (!src) {
+      return '16 / 10';
+    }
+    const ratio = this.ratiosBySrc()[src];
+    if (!ratio || !Number.isFinite(ratio) || ratio <= 0) {
+      return '16 / 10';
+    }
+    // Quantize into a few pleasant kiosk-friendly frames.
+    if (ratio < 0.9) {
+      return '3 / 4'; // portrait
+    }
+    if (ratio <= 1.12) {
+      return '1 / 1'; // near-square
+    }
+    return '16 / 10'; // landscape
   });
 
   constructor() {
@@ -51,6 +74,7 @@ export class PhotoGallerySectionComponent {
           resolved && resolved.length > 0 ? resolved : fallback.length > 0 ? fallback : [];
         this.images.set(use);
         this.index.set(0);
+        this.ratiosBySrc.set({});
       });
 
     effect((onCleanup) => {
@@ -73,13 +97,13 @@ export class PhotoGallerySectionComponent {
       if (typeof row === 'string') {
         const file = row.replace(/^\/+/, '');
         return {
-          src: `/assets/project/${file}`,
+          src: `assets/project/${file}`,
           alt: `Project photo ${i + 1}`
         };
       }
       const file = row.file.replace(/^\/+/, '');
       return {
-        src: `/assets/project/${file}`,
+        src: `assets/project/${file}`,
         alt: row.alt || `Project photo ${i + 1}`
       };
     });
@@ -137,5 +161,16 @@ export class PhotoGallerySectionComponent {
     }
     this.index.set(i);
     this.bumpAutoplay();
+  }
+
+  onImageLoad(el: HTMLImageElement): void {
+    const src = el.currentSrc || el.src;
+    const w = el.naturalWidth || 0;
+    const h = el.naturalHeight || 0;
+    if (!src || w <= 0 || h <= 0) {
+      return;
+    }
+    const ratio = w / h;
+    this.ratiosBySrc.update((curr) => (curr[src] === ratio ? curr : { ...curr, [src]: ratio }));
   }
 }

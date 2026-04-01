@@ -5,6 +5,7 @@ export type ProjectStatIcon =
   | 'transaction'
   | 'table'
   | 'smartForm'
+  | 'rfc'
   | 'grandTotal';
 
 export interface ProjectStat {

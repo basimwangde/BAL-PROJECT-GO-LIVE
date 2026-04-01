@@ -50,6 +50,13 @@
                     <path d="M4 4h16v4H4zM4 12h10v8H4zM16 12h4v4h-4zM16 18h4v2h-4z" />
                   </svg>
                 }
+                @case ('rfc') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="5" width="8" height="14" rx="2" />
+                    <path d="M11 12h6M15 10l2 2-2 2" />
+                    <rect x="17" y="8" width="4" height="8" rx="1" />
+                  </svg>
+                }
                 @case ('grandTotal') {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7L12 17.8 5.7 21l2.3-7-6-4.6h7.6L12 2z" />
@@ -67,9 +74,7 @@
             </div>
             <div class="stat__meta">
               <span class="stat__label">{{ row.label }}</span>
-              @if (i < d.customObjectStats.length - 1) {
-                <span class="stat__chip">Object type</span>
-              } @else {
+              @if (i === d.customObjectStats.length - 1) {
                 <span class="stat__chip stat__chip--total">Portfolio sum</span>
               }
             </div>
