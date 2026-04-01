@@ -1,0 +1,228 @@
+/* —— Full slide: editorial “highlights” stage —— */
+.kh--spotlight {
+  position: relative;
+  isolation: isolate;
+  min-height: 100%;
+  padding: var(--pad);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.2vmin, 28px);
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.kh__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.kh__bg-bloom {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+}
+
+.kh__bg-bloom--1 {
+  width: min(85vw, 720px);
+  height: min(55vh, 520px);
+  top: -12%;
+  left: -8%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent-soft) 45%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+.kh__bg-bloom--2 {
+  width: min(70vw, 560px);
+  height: min(48vh, 440px);
+  bottom: -5%;
+  right: -10%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--cool) 35%, transparent) 0%,
+    transparent 68%
+  );
+  opacity: 0.4;
+}
+
+.kh__bg-bloom--3 {
+  width: min(50vw, 400px);
+  height: min(35vh, 320px);
+  top: 38%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, #ffffff 70%, var(--accent)) 0%,
+    transparent 65%
+  );
+  opacity: 0.22;
+  filter: blur(64px);
+}
+
+.kh__bg-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    radial-gradient(color-mix(in srgb, var(--accent) 16%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 20%, transparent 75%);
+}
+
+/* Match transformation-snapshot (New on S/4HANA): left-aligned editorial stack */
+.kh__intro {
+  position: relative;
+  z-index: 1;
+  max-width: min(920px, 92vw);
+  width: 100%;
+  margin: 0;
+  text-align: left;
+}
+
+.kh__intro .story-kicker {
+  margin: 0;
+}
+
+/* Same treatment as .snap__title + global .story-display (Fraunces, deep tone) */
+.kh__title {
+  margin: 10px 0 0;
+  font-size: var(--h2);
+  color: var(--text-bright);
+}
+
+.kh__rule {
+  margin: clamp(16px, 2vw, 24px) 0;
+  max-width: 280px;
+}
+
+.kh__lead {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.2vw, 1.3rem);
+  line-height: 1.5;
+  color: var(--text-soft);
+  max-width: 58ch;
+  font-weight: 500;
+}
+
+/* —— All KPIs visible: staggered row entrance; title + value first —— */
+.kh__grid {
+  --kh-stagger: 420ms;
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: min(1600px, 94vw, 100%);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.2vmin, 26px) clamp(20px, 2.8vmin, 36px);
+  align-content: start;
+}
+
+@media (max-width: 900px) {
+  .kh__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .kh__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kh__item {
+  position: relative;
+  margin: 0;
+  box-sizing: border-box;
+  min-height: clamp(168px, 24vmin, 240px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: calc(5px + clamp(18px, 2.4vmin, 28px)) clamp(22px, 3.5vmin, 44px) clamp(22px, 2.8vmin, 34px);
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+  /* Top accent is part of the card background so it follows border-radius (no floating bar). */
+  background:
+    linear-gradient(
+      90deg,
+      var(--percipere-blue),
+      var(--percipere-cyan) 45%,
+      var(--percipere-magenta)
+    )
+    center top / 100% 4px no-repeat,
+    #ffffff;
+  overflow: hidden;
+  box-shadow:
+    0 10px 32px rgba(15, 45, 28, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 1) inset;
+  opacity: 0;
+  animation: kh-row-in 580ms cubic-bezier(0.2, 0.85, 0.2, 1) both;
+  animation-delay: calc(var(--ki, 0) * var(--kh-stagger));
+}
+
+/* KPI label: same voice as .story-kicker (Capability spotlight) — blue, caps, tracked sans */
+.kh__item-title {
+  margin: 0 0 clamp(12px, 1.8vmin, 22px);
+  width: 100%;
+  max-width: min(40ch, 100%);
+  font-family: var(--font-sans);
+  font-size: clamp(0.92rem, 1.55vmin + 0.68rem, 1.28rem);
+  /* Request max axis; Outfit caps at ~900 — extra stroke nudges perceived weight toward 1000 */
+  font-weight: 1000;
+  font-variation-settings: 'wght' 1000;
+  -webkit-text-stroke: 0.025em color-mix(in srgb, currentColor 40%, transparent);
+  line-height: 1.35;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 65%, var(--text-muted));
+  text-wrap: balance;
+}
+
+.kh__item-value {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  font-family: var(--font-kpi);
+  font-size: clamp(2.85rem, 8.5vmin + 1.2rem, 6rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  text-wrap: balance;
+  filter: drop-shadow(0 3px 20px color-mix(in srgb, var(--percipere-magenta) 18%, transparent))
+    drop-shadow(0 1px 0 color-mix(in srgb, #ffffff 70%, transparent));
+}
+
+@keyframes kh-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kh__item {
+    opacity: 1;
+    animation: none;
+  }
+}

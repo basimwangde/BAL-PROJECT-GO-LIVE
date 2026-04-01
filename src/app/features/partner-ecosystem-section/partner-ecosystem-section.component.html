@@ -53,21 +53,16 @@
           fill="none"
         />
         @for (s of satelliteLayout(); track s.name) {
-          <line
-            class="eco__wire eco__wire--hub-ray"
-            [attr.x1]="hubX"
-            [attr.y1]="hubY"
-            [attr.x2]="s.x"
-            [attr.y2]="s.y"
-          />
+          @if (s.name !== 'Raintree') {
+            <line
+              class="eco__wire eco__wire--hub-ray"
+              [attr.x1]="hubX"
+              [attr.y1]="hubY"
+              [attr.x2]="s.x"
+              [attr.y2]="s.y"
+            />
+          }
         }
-        <line
-          class="eco__wire eco__wire--to-hub"
-          x1="50"
-          [attr.y1]="wireOriginY"
-          [attr.x2]="hubX"
-          [attr.y2]="hubY"
-        />
         @for (s of satelliteLayout(); track s.name) {
           <line
             class="eco__wire eco__wire--facilitator"
@@ -112,82 +107,79 @@
         <span class="eco__hub-name">{{ customerName }}</span>
       </div>
 
-      @for (s of satelliteLayout(); track s.name) {
-        <div class="eco__sat" [style.left]="s.x + '%'" [style.top]="s.y + '%'">
-          <span class="eco__sat-icon" aria-hidden="true">
-            @switch (iconForPartner(s.name)) {
-              @case ('chart') {
-                <svg class="eco__ico" viewBox="0 0 24 24">
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    d="M4 20V11M10 20V4M16 20v-7M22 20V8"
-                  />
-                </svg>
+      @for (epoch of [satAnimEpoch()]; track epoch) {
+        @for (s of satelliteLayout(); track s.name; let i = $index) {
+          <div
+            class="eco__sat"
+            [style.left]="s.x + '%'"
+            [style.top]="s.y + '%'"
+            [style.--eco-sat-i]="i"
+          >
+            <span class="eco__sat-icon" aria-hidden="true">
+              @switch (iconForPartner(s.name)) {
+                @case ('chart') {
+                  <svg class="eco__ico" viewBox="0 0 24 24">
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      d="M4 20V11M10 20V4M16 20v-7M22 20V8"
+                    />
+                  </svg>
+                }
+                @case ('bank') {
+                  <svg class="eco__ico" viewBox="0 0 24 24">
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                      d="M3 10h18v9H3zM12 2L3 7h18L12 2zM7 14h2M11 14h2M15 14h2"
+                    />
+                  </svg>
+                }
+                @case ('puzzle') {
+                  <svg class="eco__ico" viewBox="0 0 24 24">
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                      d="M9 3h2a1 1 0 011 1v2a2 2 0 004 0V4a1 1 0 011-1h2M9 21h2a1 1 0 001-1v-2a2 2 0 014 0v2a1 1 0 001 1h2M3 9v2a1 1 0 001 1h2a2 2 0 010 4H4a1 1 0 00-1 1v2M21 9v2a1 1 0 01-1 1h-2a2 2 0 000 4h2a1 1 0 011 1v2"
+                    />
+                  </svg>
+                }
+                @case ('cube') {
+                  <svg class="eco__ico" viewBox="0 0 24 24">
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                      d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"
+                    />
+                  </svg>
+                }
+                @default {
+                  <svg class="eco__ico" viewBox="0 0 24 24">
+                    <circle cx="5" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="2" />
+                    <circle cx="19" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="2" />
+                    <circle cx="12" cy="19" r="2.5" fill="none" stroke="currentColor" stroke-width="2" />
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      d="M7 6.5l5 10M17 6.5l-5 10M12 8v3"
+                    />
+                  </svg>
+                }
               }
-              @case ('bank') {
-                <svg class="eco__ico" viewBox="0 0 24 24">
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linejoin="round"
-                    d="M3 10h18v9H3zM12 2L3 7h18L12 2zM7 14h2M11 14h2M15 14h2"
-                  />
-                </svg>
-              }
-              @case ('puzzle') {
-                <svg class="eco__ico" viewBox="0 0 24 24">
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linejoin="round"
-                    d="M9 3h2a1 1 0 011 1v2a2 2 0 004 0V4a1 1 0 011-1h2M9 21h2a1 1 0 001-1v-2a2 2 0 014 0v2a1 1 0 001 1h2M3 9v2a1 1 0 001 1h2a2 2 0 010 4H4a1 1 0 00-1 1v2M21 9v2a1 1 0 01-1 1h-2a2 2 0 000 4h2a1 1 0 011 1v2"
-                  />
-                </svg>
-              }
-              @case ('cube') {
-                <svg class="eco__ico" viewBox="0 0 24 24">
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linejoin="round"
-                    d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"
-                  />
-                </svg>
-              }
-              @default {
-                <svg class="eco__ico" viewBox="0 0 24 24">
-                  <circle cx="5" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="2" />
-                  <circle cx="19" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="2" />
-                  <circle cx="12" cy="19" r="2.5" fill="none" stroke="currentColor" stroke-width="2" />
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    d="M7 6.5l5 10M17 6.5l-5 10M12 8v3"
-                  />
-                </svg>
-              }
-            }
-          </span>
-          <span class="eco__sat-name">{{ s.name }}</span>
-        </div>
+            </span>
+            <span class="eco__sat-name">{{ s.name }}</span>
+          </div>
+        }
       }
     </div>
-
-    <p class="eco__orbit-legend">
-      <svg class="eco__legend-ico" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.5" />
-        <circle cx="12" cy="4" r="2" fill="currentColor" opacity="0.35" />
-        <circle cx="20" cy="16" r="2" fill="currentColor" opacity="0.35" />
-        <circle cx="4" cy="16" r="2" fill="currentColor" opacity="0.35" />
-      </svg>
-      {{ d.ecosystemSlide.satelliteCaption }}
-    </p>
   </div>
 </section>

@@ -7,7 +7,8 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  /* Reserve space for fixed nav pill + shadow so in-flow height matches safe area */
+  padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
 }
 
@@ -22,7 +23,7 @@
   padding: clamp(8px, 1vw, 12px) clamp(12px, 1.6vw, 18px);
   border-radius: var(--radius-lg);
   border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.94) 0%, rgba(247, 251, 248, 0.92) 100%);
+  background: #ffffff;
   box-shadow: var(--shadow-soft), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -57,8 +58,8 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(900px 520px at 10% 92%, var(--glow), transparent 52%),
-    radial-gradient(760px 480px at 92% 88%, rgba(42, 157, 98, 0.06), transparent 50%);
+    radial-gradient(900px 520px at 10% 92%, var(--ambient-blue), transparent 52%),
+    radial-gradient(760px 480px at 92% 88%, var(--ambient-magenta), transparent 50%);
   opacity: 1;
 }
 
@@ -68,21 +69,25 @@
   width: 100%;
   height: 100%;
   min-height: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  /* Scroll past last content so it clears the fixed nav (pill sits above safe area) */
+  padding-bottom: clamp(72px, 14vmin, 128px);
+  scroll-padding-bottom: clamp(72px, 14vmin, 128px);
   animation: kioskIn var(--slide-ms, 820ms) cubic-bezier(0.2, 0.85, 0.2, 1) both;
 }
 
-/* Tall-narrow / 4×6: allow vertical scroll if a slide is taller than the viewport */
+/* Tall-narrow / 4×6: slightly tighter chrome */
 @media (max-aspect-ratio: 3/4) {
-  .kiosk__slide {
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
+  .kiosk {
+    padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px));
   }
 
-  .kiosk {
-    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  .kiosk__slide {
+    padding-bottom: clamp(64px, 12vmin, 112px);
+    scroll-padding-bottom: clamp(64px, 12vmin, 112px);
   }
 
   .kiosk__nav {
@@ -133,7 +138,7 @@
   padding: 12px 18px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: linear-gradient(145deg, #ffffff 0%, var(--panel-muted) 100%);
+  background: #ffffff;
   box-shadow: var(--shadow-soft), 0 1px 0 #fff inset;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);

@@ -43,7 +43,7 @@
               <p class="dcard__sub">ECC baseline → S/4HANA target</p>
             </div>
             <div class="dcard__badge" aria-label="Record reduction versus ECC">
-              <span class="dcard__badge-val">−{{ reductionPercent(row) }}%</span>
+              <span class="dcard__badge-val kpi-num">−{{ reductionPercent(row) }}%</span>
               <span class="dcard__badge-hint">fewer records</span>
             </div>
           </header>
@@ -66,7 +66,7 @@
             <div class="viz__lane">
               <div class="viz__lane-head">
                 <span class="viz__erp viz__erp--s4">SAP S/4HANA</span>
-                <span class="viz__amount viz__amount--s4">{{ row.to }}</span>
+                <span class="viz__amount viz__amount--s4 kpi-num">{{ row.to }}</span>
               </div>
               <div class="viz__track viz__track--s4" aria-hidden="true">
                 <div class="viz__fill viz__fill--s4" [style.width.%]="s4BarPercent(row)"></div>

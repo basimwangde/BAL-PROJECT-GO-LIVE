@@ -1,0 +1,10 @@
+[
+  { "file": "photo-1.jpg", "alt": "Project photo 1" },
+  { "file": "photo-2.jpg", "alt": "Project photo 2" },
+  { "file": "photo-3.jpg", "alt": "Project photo 3" },
+  { "file": "photo-4.jpg", "alt": "Project photo 4" },
+  { "file": "photo-5.jpg", "alt": "Project photo 5" },
+  { "file": "photo-6.jpg", "alt": "Project photo 6" },
+  { "file": "photo-7.jpg", "alt": "Project photo 7" },
+  { "file": "photo-8.jpg", "alt": "Project photo 8" }
+]

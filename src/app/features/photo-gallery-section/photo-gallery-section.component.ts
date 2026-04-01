@@ -1,6 +1,14 @@
-import { Component, effect, input, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, computed, DestroyRef, effect, inject, input, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, map, of } from 'rxjs';
 import { PROJECT_DISPLAY_DATA } from '../../core/data/project-display.data';
+import type { GalleryImage } from '../../core/models/gallery-image.model';
 import { BrandedImageComponent } from '../../shared/branded-image/branded-image.component';
+
+const MANIFEST_URL = '/assets/project/gallery-manifest.json';
+
+type ManifestEntry = string | { file: string; alt?: string };
 
 @Component({
   selector: 'app-photo-gallery-section',
@@ -10,41 +18,124 @@ import { BrandedImageComponent } from '../../shared/branded-image/branded-image.
   styleUrl: './photo-gallery-section.component.css'
 })
 export class PhotoGallerySectionComponent {
-  readonly d = PROJECT_DISPLAY_DATA.gallery;
+  private readonly http = inject(HttpClient);
+  private readonly destroyRef = inject(DestroyRef);
+
+  readonly cfg = PROJECT_DISPLAY_DATA.gallery;
   readonly isActive = input(false);
 
+  readonly images = signal<GalleryImage[]>([]);
   readonly index = signal(0);
 
+  private intervalId: ReturnType<typeof setInterval> | null = null;
+
+  readonly slideLabel = computed(() => {
+    const n = this.images().length;
+    if (n === 0) {
+      return '';
+    }
+    return `Image ${this.index() + 1} of ${n}`;
+  });
+
   constructor() {
-    effect((onCleanup) => {
-      if (!this.isActive()) {
+    this.http
+      .get<ManifestEntry[]>(MANIFEST_URL)
+      .pipe(
+        map((rows) => this.normalizeManifest(rows)),
+        catchError(() => of(null)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((resolved) => {
+        const fallback = this.cfg.images;
+        const use =
+          resolved && resolved.length > 0 ? resolved : fallback.length > 0 ? fallback : [];
+        this.images.set(use);
         this.index.set(0);
+      });
+
+    effect((onCleanup) => {
+      const active = this.isActive();
+      const n = this.images().length;
+      if (!active || n === 0) {
+        this.stopAutoplay();
         return;
       }
-      const id = window.setInterval(() => {
-        const n = this.d.images.length;
-        if (n === 0) {
-          return;
-        }
-        this.index.update((i) => (i + 1) % n);
-      }, Math.max(800, this.d.rotateEveryMs));
-      onCleanup(() => window.clearInterval(id));
+      this.startAutoplay();
+      onCleanup(() => this.stopAutoplay());
     });
   }
 
-  prev(): number {
-    const n = this.d.images.length;
-    if (n === 0) {
-      return 0;
+  private normalizeManifest(rows: ManifestEntry[] | null): GalleryImage[] | null {
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return null;
     }
-    return (this.index() - 1 + n) % n;
+    return rows.map((row, i) => {
+      if (typeof row === 'string') {
+        const file = row.replace(/^\/+/, '');
+        return {
+          src: `/assets/project/${file}`,
+          alt: `Project photo ${i + 1}`
+        };
+      }
+      const file = row.file.replace(/^\/+/, '');
+      return {
+        src: `/assets/project/${file}`,
+        alt: row.alt || `Project photo ${i + 1}`
+      };
+    });
   }
 
-  next(): number {
-    const n = this.d.images.length;
-    if (n === 0) {
-      return 0;
+  private stopAutoplay(): void {
+    if (this.intervalId !== null) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
     }
-    return (this.index() + 1) % n;
+  }
+
+  private startAutoplay(): void {
+    this.stopAutoplay();
+    const ms = Math.max(500, this.cfg.rotateEveryMs);
+    const n = this.images().length;
+    if (n === 0) {
+      return;
+    }
+    this.intervalId = setInterval(() => {
+      this.index.update((i) => (i + 1) % n);
+    }, ms);
+  }
+
+  /** Restart timer after manual navigation */
+  private bumpAutoplay(): void {
+    if (!this.isActive()) {
+      return;
+    }
+    this.startAutoplay();
+  }
+
+  goPrev(): void {
+    const n = this.images().length;
+    if (n === 0) {
+      return;
+    }
+    this.index.update((i) => (i - 1 + n) % n);
+    this.bumpAutoplay();
+  }
+
+  goNext(): void {
+    const n = this.images().length;
+    if (n === 0) {
+      return;
+    }
+    this.index.update((i) => (i + 1) % n);
+    this.bumpAutoplay();
+  }
+
+  goTo(i: number): void {
+    const n = this.images().length;
+    if (n === 0 || i < 0 || i >= n) {
+      return;
+    }
+    this.index.set(i);
+    this.bumpAutoplay();
   }
 }

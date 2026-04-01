@@ -1,5 +1,6 @@
 export type DisplaySectionId =
   | 'hero'
+  | 'keyHighlights'
   | 'snapshot'
   | 'timeline'
   | 'customObjects'

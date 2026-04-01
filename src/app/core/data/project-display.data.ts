@@ -1,6 +1,7 @@
 import type { DisplaySection } from '../models/display-section.model';
 import type { DataImpactRow } from '../models/data-impact-row.model';
 import type { GalleryImage } from '../models/gallery-image.model';
+import type { KeyHighlightKpi } from '../models/key-highlight-kpi.model';
 import type { ProjectStat } from '../models/project-stat.model';
 
 export interface DisplayConfig {
@@ -51,6 +52,15 @@ export interface DisplayConfig {
   timeline: Array<{ label: string; dateHint?: string; summary?: string }>;
   customObjectStats: ProjectStat[];
   dataImpact: DataImpactRow[];
+  /** Program outcomes — slide after hero (all KPIs visible, staggered entrance) */
+  keyHighlightsSection: {
+    slideKicker: string;
+    title: string;
+    lead: string;
+    /** Delay between each KPI’s entrance animation (ms); pass to CSS --kh-stagger. */
+    itemStaggerMs: number;
+    kpis: KeyHighlightKpi[];
+  };
   /** Flat list: customer, implementation partner, then specialist partners (used by Ecosystem slide). */
   partners: string[];
   ecosystemSlide: {
@@ -78,10 +88,10 @@ const s4HighlightsSection: DisplayConfig['s4HighlightsSection'] = {
   bubbleEntranceDurationMs: 800,
   holdAfterLastBubbleMs: 3000,
   items: [
-    'Re-org from 15 Company Codes to 7 Company Codes',
+    'Re-organization',
     'Project System',
     'Plant Maintenance',
-    'COPA (Product & Customer)',
+    'COPA Redesign',
     'Costing',
     'MRP',
     'Batch Management',
@@ -97,6 +107,31 @@ const snapshotSlideDurationMs =
     ? (s4HighlightsSection.items.length - 1) * s4HighlightsSection.itemStaggerMs +
       s4HighlightsSection.bubbleEntranceDurationMs +
       s4HighlightsSection.holdAfterLastBubbleMs
+    : DEFAULT_DURATION;
+
+/** Stagger between KPI row animations (must match `.kh__item` delay usage). */
+const KEY_HIGHLIGHT_STAGGER_MS = 420;
+/** Approximate row entrance length in `key-highlights-section.component.css` (kh-row-in). */
+const KEY_HIGHLIGHT_ROW_ENTRANCE_MS = 580;
+const KEY_HIGHLIGHT_HOLD_AFTER_MS = 5_000;
+
+const KEY_HIGHLIGHT_KPIS: KeyHighlightKpi[] = [
+  { title: 'New modules implemented', value: '5', icon: 'modules' },
+  { title: 'New features activated', value: '10', icon: 'features' },
+  { title: 'Company code consolidation', value: '15 → 7', icon: 'consolidation' },
+  { title: 'Improvement areas covered', value: '37', icon: 'improvement' },
+  { title: 'Plants covered', value: '310', icon: 'plants' },
+  { title: 'Users covered', value: '407', icon: 'users' },
+  { title: 'Implementation partners', value: '10', icon: 'partners' },
+  { title: 'Master Objects cleansed', value: '25', icon: 'dataCleansing' },
+  { title: 'LoB Solution Redesigned', value: '2', icon: 'lob' }
+];
+
+const keyHighlightsSlideDurationMs =
+  KEY_HIGHLIGHT_KPIS.length > 0
+    ? (KEY_HIGHLIGHT_KPIS.length - 1) * KEY_HIGHLIGHT_STAGGER_MS +
+      KEY_HIGHLIGHT_ROW_ENTRANCE_MS +
+      KEY_HIGHLIGHT_HOLD_AFTER_MS
     : DEFAULT_DURATION;
 
 export const PROJECT_DISPLAY_DATA: DisplayConfig = {
@@ -129,6 +164,7 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
   },
   sections: [
     { id: 'hero', title: 'The story opens', durationMs: 12_000 },
+    { id: 'keyHighlights', title: 'Key highlights', durationMs: keyHighlightsSlideDurationMs },
     { id: 'snapshot', title: 'S/4HANA highlights', durationMs: snapshotSlideDurationMs },
     { id: 'partners', title: 'Ecosystem', durationMs: 13_800 },
     { id: 'timeline', title: 'The journey', durationMs: 10_500 },
@@ -137,6 +173,13 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     { id: 'gallery', title: 'Moments that matter', durationMs: 11_000 },
     { id: 'closing', title: 'Applause', durationMs: 10_500 }
   ],
+  keyHighlightsSection: {
+    slideKicker: 'Highlights',
+    title: 'Key highlights',
+    lead: 'Program milestones and outcomes at a glance — from footprint and users to data and LoB.',
+    itemStaggerMs: KEY_HIGHLIGHT_STAGGER_MS,
+    kpis: KEY_HIGHLIGHT_KPIS
+  },
   s4HighlightsSection,
   timeline: [
     {
@@ -219,7 +262,8 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     'SBI Bank',
     'IDBI Bank',
     'Cashflo',
-    'Power BI'
+    'Power BI',
+    'ZENCON'
   ],
   ecosystemSlide: {
     slideKicker: 'Partner network',
@@ -230,17 +274,21 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     hubCaption: 'Customer · program anchor',
     satelliteCaption: 'Specialist partners'
   },
+  /**
+   * Slideshow timing + fallback list if `assets/project/gallery-manifest.json` is missing.
+   * Prefer editing the manifest so new files in `assets/project/` are listed in one place.
+   */
   gallery: {
-    rotateEveryMs: 2800,
+    rotateEveryMs: 4000,
     images: [
-      { src: '/assets/project/photo-1.svg', alt: 'Project photo 1', caption: 'Workshops & alignment' },
-      { src: '/assets/project/photo-2.svg', alt: 'Project photo 2', caption: 'Blueprint to build' },
-      { src: '/assets/project/photo-3.svg', alt: 'Project photo 3', caption: 'Collaboration in action' },
-      { src: '/assets/project/photo-4.svg', alt: 'Project photo 4', caption: 'Testing & readiness' },
-      { src: '/assets/project/photo-5.svg', alt: 'Project photo 5', caption: 'Cutover planning' },
-      { src: '/assets/project/photo-6.svg', alt: 'Project photo 6', caption: 'Go-live energy' },
-      { src: '/assets/project/photo-7.svg', alt: 'Project photo 7', caption: 'Team moments' },
-      { src: '/assets/project/photo-8.svg', alt: 'Project photo 8', caption: 'Celebrating execution' }
+      { src: '/assets/project/photo-1.jpg', alt: 'Project photo 1' },
+      { src: '/assets/project/photo-2.jpg', alt: 'Project photo 2' },
+      { src: '/assets/project/photo-3.jpg', alt: 'Project photo 3' },
+      { src: '/assets/project/photo-4.jpg', alt: 'Project photo 4' },
+      { src: '/assets/project/photo-5.jpg', alt: 'Project photo 5' },
+      { src: '/assets/project/photo-6.jpg', alt: 'Project photo 6' },
+      { src: '/assets/project/photo-7.jpg', alt: 'Project photo 7' },
+      { src: '/assets/project/photo-8.jpg', alt: 'Project photo 8' }
     ]
   }
 };

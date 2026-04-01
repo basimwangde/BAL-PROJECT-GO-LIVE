@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect, input, signal } from '@angular/core';
 import { PROJECT_DISPLAY_DATA } from '../../core/data/project-display.data';
 import { BrandedImageComponent } from '../../shared/branded-image/branded-image.component';
 
@@ -14,13 +14,32 @@ export type EcosystemPartnerIcon = 'chart' | 'bank' | 'link' | 'puzzle' | 'cube'
 export class PartnerEcosystemSectionComponent {
   readonly d = PROJECT_DISPLAY_DATA;
 
+  /** When true, satellite pop animation sequence runs (and replays on re-entry). */
+  readonly isActive = input(false);
+
   readonly customerName = this.d.branding.customerName;
   readonly facilitatorName = this.d.branding.partnerName;
 
   readonly hubX = 50;
   readonly hubY = 57;
   readonly wireOriginY = 11;
-  readonly orbitRadius = 37.5;
+  /** Larger orbit uses horizontal space on wide event screens */
+  readonly orbitRadius = 42.5;
+
+  /** Bumps when the slide becomes active so staggered pops replay. */
+  readonly satAnimEpoch = signal(0);
+
+  private lastActive = false;
+
+  constructor() {
+    effect(() => {
+      const active = this.isActive();
+      if (active && !this.lastActive) {
+        this.satAnimEpoch.update((e) => e + 1);
+      }
+      this.lastActive = active;
+    });
+  }
 
   get specialistPartners(): string[] {
     return this.d.partners.filter(

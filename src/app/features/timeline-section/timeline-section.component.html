@@ -1,9 +1,8 @@
 <section class="tl" aria-label="Project journey timeline">
   <div class="tl__intro">
-    <p class="story-kicker">Program journey</p>
+    <p class="story-kicker">Phases &amp; steps</p>
     <h2 class="tl__title story-display">The journey</h2>
     <div class="gold-rule tl__rule"></div>
-    <p class="tl__lead">Eight beats from kick-off to go-live — paced like a narrative, not a checklist.</p>
   </div>
 
   <div class="tl__journey">
@@ -84,7 +83,7 @@
             <div class="tl__content">
               <div class="tl__content-inner">
                 <div class="tl__main">
-                  <span class="tl__step">Step {{ i + 1 }}</span>
+                  <span class="tl__step">Phase {{ i + 1 }}</span>
                   <div class="tl__label">{{ m.label }}</div>
                   @if (m.dateHint) {
                     <div class="tl__hint">{{ m.dateHint }}</div>
@@ -95,7 +94,7 @@
                 </div>
                 <div class="tl__aside" aria-hidden="true">
                   <span class="tl__index">{{ ('0' + (i + 1)).slice(-2) }}</span>
-                  <span class="tl__phase">Phase {{ i + 1 }} · 8</span>
+                  <span class="tl__phase">Step {{ i + 1 }} · {{ d.timeline.length }}</span>
                 </div>
               </div>
             </div>

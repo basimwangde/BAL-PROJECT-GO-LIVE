@@ -142,7 +142,7 @@
 }
 
 .tl__item:last-child {
-  padding-bottom: 0;
+  padding-bottom: clamp(10px, 2vmin, 24px);
 }
 
 .tl__item--lit {

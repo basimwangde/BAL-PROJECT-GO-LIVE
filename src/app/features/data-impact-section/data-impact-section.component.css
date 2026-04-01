@@ -178,7 +178,6 @@
   font-size: clamp(1.15rem, 1.8vmin + 0.55rem, 1.45rem);
   letter-spacing: -0.03em;
   line-height: 1.1;
-  color: var(--accent);
 }
 
 .dcard__badge-hint {
@@ -244,8 +243,7 @@
 
 .viz__amount--s4 {
   font-size: clamp(1.35rem, 2.4vmin + 0.65rem, 1.9rem);
-  color: var(--accent);
-  filter: drop-shadow(0 2px 10px color-mix(in srgb, var(--accent) 22%, transparent));
+  filter: drop-shadow(0 2px 12px color-mix(in srgb, var(--percipere-blue) 22%, transparent));
 }
 
 .viz__track {

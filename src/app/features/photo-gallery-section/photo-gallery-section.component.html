@@ -5,45 +5,66 @@
     <div class="gold-rule gal__rule"></div>
   </div>
 
-  @if (d.images.length) {
-    <div class="gal__layout">
-      <figure class="gal__side glass">
-        <app-branded-image
-          [src]="d.images[prev()].src"
-          [alt]="d.images[prev()].alt"
-          imgClass="gal__img gal__img--side"
-          fit="cover"
-          [fallbackTitle]="'Photo ' + (prev() + 1)"
-          fallbackSubtitle="Add JPG/PNG to src/assets/project/"
-        />
-      </figure>
+  @if (images().length) {
+    <div class="gal__carousel" aria-roledescription="carousel">
+      <div class="gal__toolbar">
+        <span class="gal__counter" aria-live="polite">{{ slideLabel() }}</span>
+        <span class="gal__hint">{{ cfg.rotateEveryMs / 1000 }}s per image · use arrows to move</span>
+      </div>
 
-      <figure class="gal__hero glass">
-        <app-branded-image
-          [src]="d.images[index()].src"
-          [alt]="d.images[index()].alt"
-          imgClass="gal__img gal__img--hero"
-          fit="cover"
-          [fallbackTitle]="d.images[index()].caption || d.images[index()].alt"
-          fallbackSubtitle="Replace with your event photography"
-        />
-        @if (d.images[index()].caption) {
-          <figcaption class="gal__cap">{{ d.images[index()].caption }}</figcaption>
+      <div class="gal__stage">
+        <button
+          type="button"
+          class="gal__nav gal__nav--prev"
+          (click)="goPrev()"
+          aria-label="Previous image"
+        >
+          <span aria-hidden="true">‹</span>
+        </button>
+
+        <figure class="gal__frame glass">
+          @for (idx of [index()]; track idx) {
+            @if (images()[idx]; as img) {
+              <app-branded-image
+                [src]="img.src"
+                [alt]="img.alt"
+                imgClass="gal__img"
+                fit="cover"
+                [fallbackTitle]="img.alt"
+                fallbackSubtitle="Add this file under src/assets/project/"
+              />
+            }
+          }
+        </figure>
+
+        <button
+          type="button"
+          class="gal__nav gal__nav--next"
+          (click)="goNext()"
+          aria-label="Next image"
+        >
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
+
+      <div class="gal__dots" role="tablist" aria-label="Select image">
+        @for (_ of images(); track $index; let di = $index) {
+          <button
+            type="button"
+            class="gal__dot"
+            [class.gal__dot--active]="index() === di"
+            (click)="goTo(di)"
+            role="tab"
+            [attr.aria-selected]="index() === di"
+            [attr.aria-label]="'Image ' + (di + 1)"
+          ></button>
         }
-      </figure>
-
-      <figure class="gal__side glass">
-        <app-branded-image
-          [src]="d.images[next()].src"
-          [alt]="d.images[next()].alt"
-          imgClass="gal__img gal__img--side"
-          fit="cover"
-          [fallbackTitle]="'Photo ' + (next() + 1)"
-          fallbackSubtitle="Add JPG/PNG to src/assets/project/"
-        />
-      </figure>
+      </div>
     </div>
   } @else {
-    <p class="gal__empty">Add photos under <code>src/assets/project/</code> and list them in the display config.</p>
+    <p class="gal__empty">
+      Add <code>gallery-manifest.json</code> under <code>src/assets/project/</code> (or configure fallback
+      images in the display data).
+    </p>
   }
 </section>

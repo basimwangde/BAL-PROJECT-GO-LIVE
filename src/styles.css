@@ -1,39 +1,59 @@
 :root {
-  /* Light showcase: white / soft mint + enterprise green */
-  --bg-deep: #e8f0ea;
-  --bg-mid: #f2f7f3;
-  --bg-page: #f7fbf8;
-  --panel: #ffffff;
-  --panel-muted: #f3faf4;
+  /* Percipere brand — electric blue, cyan, magenta (logo family) */
+  --percipere-blue: #0066ff;
+  --percipere-blue-deep: #0047b3;
+  --percipere-blue-soft: #3d8cff;
+  --percipere-cyan: #00b4ff;
+  --percipere-magenta: #e6007e;
+  --percipere-magenta-soft: #ff4a9d;
 
-  --text: #173524;
-  --text-soft: rgba(23, 53, 36, 0.82);
-  --text-muted: rgba(23, 53, 36, 0.52);
-  --text-bright: #0d2818;
+  --bg-deep: #f1f3f9;
+  --bg-mid: #f7f8fc;
+  --bg-page: #ffffff;
+  --panel: #ffffff;
+  --panel-muted: #f4f5fa;
+
+  --text: #161c2d;
+  --text-soft: rgba(22, 28, 45, 0.88);
+  --text-muted: rgba(22, 28, 45, 0.52);
+  --text-bright: #0d1224;
 
   --cream: var(--text);
   --cream-soft: var(--text-soft);
   --cream-muted: var(--text-muted);
   --cream-highlight: var(--text-bright);
 
-  --accent: #1b7f4a;
-  --accent-soft: #2a9d62;
-  --copper: #156b3d;
-  --cool: #4a8f6a;
+  --accent: var(--percipere-blue);
+  --accent-soft: var(--percipere-blue-soft);
+  --copper: var(--percipere-blue-deep);
+  --cool: var(--percipere-cyan);
 
-  --glow: rgba(27, 127, 74, 0.14);
-  --glow-strong: rgba(27, 127, 74, 0.22);
+  --glow: color-mix(in srgb, var(--percipere-blue) 16%, transparent);
+  --glow-strong: color-mix(in srgb, var(--percipere-magenta) 18%, transparent);
 
-  --line: rgba(27, 127, 74, 0.14);
-  --line-strong: rgba(27, 127, 74, 0.22);
+  --line: color-mix(in srgb, var(--percipere-blue) 22%, rgba(22, 28, 45, 0.12));
+  --line-strong: color-mix(in srgb, var(--percipere-magenta) 28%, rgba(22, 28, 45, 0.14));
+
+  /* Ambient tints (replace hardcoded green washes) */
+  --ambient-blue: rgba(0, 102, 255, 0.07);
+  --ambient-magenta: rgba(230, 0, 126, 0.06);
+  --ambient-cyan: rgba(0, 180, 255, 0.06);
+
+  /* KPI / stat numerals — gradient fill */
+  --kpi-gradient: linear-gradient(
+    118deg,
+    var(--percipere-blue) 0%,
+    var(--percipere-cyan) 42%,
+    var(--percipere-magenta) 100%
+  );
 
   --font-display: 'Fraunces', 'Georgia', 'Times New Roman', serif;
   --font-sans: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
   /** Large KPI / stats (tabular, sans — pairs with display titles) */
   --font-kpi: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  --shadow-deep: 0 28px 90px rgba(15, 45, 28, 0.12);
-  --shadow-soft: 0 14px 44px rgba(15, 45, 28, 0.08);
+  --shadow-deep: 0 24px 64px rgba(22, 28, 45, 0.1);
+  --shadow-soft: 0 10px 36px rgba(22, 28, 45, 0.07);
 
   --radius-xl: 32px;
   --radius-lg: 24px;
@@ -43,10 +63,10 @@
   --pad: clamp(28px, 3.6vw, 72px);
 
   --h1: clamp(52px, 5.4vw, 104px);
-  --h2: clamp(36px, 3.5vw, 64px);
-  --h3: clamp(24px, 2.1vw, 38px);
-  --body: clamp(17px, 1.35vw, 26px);
-  --small: clamp(13px, 1vw, 17px);
+  --h2: clamp(38px, 3.6vw, 68px);
+  --h3: clamp(26px, 2.2vw, 40px);
+  --body: clamp(18px, 1.4vw, 28px);
+  --small: clamp(14px, 1.05vw, 18px);
 }
 
 html {
@@ -59,11 +79,10 @@ body {
   margin: 0;
   color: var(--text);
   font-family: var(--font-sans);
-  background:
-    radial-gradient(1000px 680px at 14% 8%, rgba(42, 157, 98, 0.09), transparent 58%),
-    radial-gradient(820px 560px at 88% 18%, rgba(27, 127, 74, 0.06), transparent 55%),
-    radial-gradient(900px 700px at 50% 110%, rgba(74, 143, 106, 0.07), transparent 52%),
-    linear-gradient(168deg, var(--bg-page) 0%, var(--bg-mid) 45%, var(--bg-deep) 100%);
+  background-color: #ffffff;
+  background-image:
+    radial-gradient(1200px 720px at 10% 0%, var(--ambient-blue), transparent 55%),
+    radial-gradient(900px 560px at 92% 100%, var(--ambient-magenta), transparent 52%);
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -125,11 +144,11 @@ img {
 }
 
 .glass {
-  background: linear-gradient(145deg, #ffffff 0%, #f8fcf9 100%);
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
-  box-shadow: var(--shadow-soft), 0 1px 0 rgba(255, 255, 255, 0.85) inset;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  box-shadow: var(--shadow-soft), 0 1px 0 rgba(255, 255, 255, 1) inset;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .story-kicker {
@@ -153,13 +172,28 @@ img {
   background: linear-gradient(
     90deg,
     transparent,
-    color-mix(in srgb, var(--accent) 50%, transparent) 18%,
-    color-mix(in srgb, var(--accent-soft) 65%, transparent) 52%,
-    color-mix(in srgb, var(--accent) 50%, transparent) 82%,
+    color-mix(in srgb, var(--percipere-blue) 55%, transparent) 16%,
+    color-mix(in srgb, var(--percipere-cyan) 70%, transparent) 44%,
+    color-mix(in srgb, var(--percipere-magenta) 65%, transparent) 72%,
+    color-mix(in srgb, var(--percipere-blue) 50%, transparent) 88%,
     transparent
   );
   opacity: 1;
   border-radius: 999px;
+}
+
+/* Large numeric KPIs — Percipere gradient (solid fallback) */
+.kpi-num {
+  color: var(--percipere-blue);
+  background-image: var(--kpi-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .kpi-num {
+    color: transparent;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

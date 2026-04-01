@@ -2,6 +2,7 @@ import { Component, OnDestroy, computed, signal } from '@angular/core';
 import { PROJECT_DISPLAY_DATA } from '../../core/data/project-display.data';
 import type { DisplaySectionId } from '../../core/models/display-section.model';
 import { HeroSectionComponent } from '../hero-section/hero-section.component';
+import { KeyHighlightsSectionComponent } from '../key-highlights-section/key-highlights-section.component';
 import { TransformationSnapshotComponent } from '../transformation-snapshot/transformation-snapshot.component';
 import { TimelineSectionComponent } from '../timeline-section/timeline-section.component';
 import { CustomObjectsSectionComponent } from '../custom-objects-section/custom-objects-section.component';
@@ -15,6 +16,7 @@ import { ClosingSectionComponent } from '../closing-section/closing-section.comp
   standalone: true,
   imports: [
     HeroSectionComponent,
+    KeyHighlightsSectionComponent,
     TransformationSnapshotComponent,
     TimelineSectionComponent,
     CustomObjectsSectionComponent,

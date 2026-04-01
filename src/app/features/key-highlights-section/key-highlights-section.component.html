@@ -1,0 +1,34 @@
+<section class="kh kh--spotlight" aria-label="Key program highlights">
+  <div class="kh__bg" aria-hidden="true">
+    <div class="kh__bg-bloom kh__bg-bloom--1"></div>
+    <div class="kh__bg-bloom kh__bg-bloom--2"></div>
+    <div class="kh__bg-bloom kh__bg-bloom--3"></div>
+    <div class="kh__bg-grid"></div>
+  </div>
+
+  <header class="kh__intro">
+    <p class="story-kicker">{{ d.keyHighlightsSection.slideKicker }}</p>
+    <h2 class="kh__title story-display">{{ d.keyHighlightsSection.title }}</h2>
+    <div class="gold-rule kh__rule"></div>
+    @if (d.keyHighlightsSection.lead) {
+      <p class="kh__lead">{{ d.keyHighlightsSection.lead }}</p>
+    }
+  </header>
+
+  @if (kpis().length) {
+    @for (epoch of [animEpoch()]; track epoch) {
+      <ul
+        class="kh__grid"
+        role="list"
+        [style.--kh-stagger]="d.keyHighlightsSection.itemStaggerMs + 'ms'"
+      >
+        @for (kpi of kpis(); track $index; let i = $index) {
+          <li class="kh__item" [style.--ki]="i">
+            <h3 class="kh__item-title">{{ kpi.title }}</h3>
+            <p class="kh__item-value kpi-num">{{ kpi.value }}</p>
+          </li>
+        }
+      </ul>
+    }
+  }
+</section>

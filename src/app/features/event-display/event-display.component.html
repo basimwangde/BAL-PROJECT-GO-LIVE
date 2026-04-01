@@ -28,6 +28,9 @@
           @case ('hero') {
             <app-hero-section />
           }
+          @case ('keyHighlights') {
+            <app-key-highlights-section [isActive]="isActive('keyHighlights')" />
+          }
           @case ('snapshot') {
             <app-transformation-snapshot />
           }
@@ -41,7 +44,7 @@
             <app-data-impact-section />
           }
           @case ('partners') {
-            <app-partner-ecosystem-section />
+            <app-partner-ecosystem-section [isActive]="isActive('partners')" />
           }
           @case ('gallery') {
             <app-photo-gallery-section [isActive]="isActive('gallery')" />
