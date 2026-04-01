@@ -231,7 +231,11 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     { id: 'timeline', title: 'The journey', durationMs: 10_500 },
     { id: 'customObjects', title: 'Scale of change', durationMs: 11_000 },
     { id: 'dataImpact', title: 'Data simplification', durationMs: dataImpactSlideDurationMs },
-    { id: 'gallery', title: 'Moments that matter', durationMs: 11_000 },
+    /**
+     * Gallery rotates every 4s and currently has ~9 images (manifest-driven).
+     * Keep the slide long enough to show all moments before advancing.
+     */
+    { id: 'gallery', title: 'Moments that matter', durationMs: 40_000 },
     { id: 'closing', title: 'Applause', durationMs: 10_500 }
   ],
   keyHighlightsSection: {

@@ -32,6 +32,8 @@ export class EventDisplayComponent implements OnDestroy {
   readonly data = PROJECT_DISPLAY_DATA;
 
   readonly sectionIndex = signal(0);
+  /** Default behaviour: autoplay is ON. */
+  readonly isPlaying = signal(true);
   readonly activeSectionId = computed(
     () => this.data.sections[this.sectionIndex()]!.id as DisplaySectionId
   );
@@ -79,18 +81,40 @@ export class EventDisplayComponent implements OnDestroy {
     this.restartAutoplay();
   }
 
+  pause(): void {
+    this.isPlaying.set(false);
+    this.clearTimer();
+  }
+
+  play(): void {
+    this.isPlaying.set(true);
+    this.scheduleAdvance();
+  }
+
+  togglePlay(): void {
+    if (this.isPlaying()) {
+      this.pause();
+    } else {
+      this.play();
+    }
+  }
+
   private restartAutoplay(): void {
     this.scheduleAdvance();
   }
 
   private scheduleAdvance(): void {
     this.clearTimer();
-    if (!this.data.autoplay.enabled) {
+    if (!this.data.autoplay.enabled || !this.isPlaying()) {
       return;
     }
     const section = this.data.sections[this.sectionIndex()]!;
     const ms = section.durationMs ?? this.data.autoplay.defaultSectionDurationMs;
     this.timer = setTimeout(() => {
+      // Guard against edge cases where the timer fires around a pause click.
+      if (!this.data.autoplay.enabled || !this.isPlaying()) {
+        return;
+      }
       const nextIdx = (this.sectionIndex() + 1) % this.data.sections.length;
       this.sectionIndex.set(nextIdx);
       this.scheduleAdvance();

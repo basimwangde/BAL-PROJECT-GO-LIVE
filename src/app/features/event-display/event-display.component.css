@@ -7,7 +7,7 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  /* Reserve space for fixed nav pill + shadow so in-flow height matches safe area */
+  /* Reserve space for fixed nav + toggle */
   padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
 }
@@ -70,24 +70,24 @@
   height: 100%;
   min-height: 0;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   /* Scroll past last content so it clears the fixed nav (pill sits above safe area) */
-  padding-bottom: clamp(72px, 14vmin, 128px);
-  scroll-padding-bottom: clamp(72px, 14vmin, 128px);
+  padding-bottom: clamp(32px, 7vmin, 72px);
+  scroll-padding-bottom: clamp(32px, 7vmin, 72px);
   animation: kioskIn var(--slide-ms, 820ms) cubic-bezier(0.2, 0.85, 0.2, 1) both;
 }
 
 /* Tall-narrow / 4×6: slightly tighter chrome */
 @media (max-aspect-ratio: 3/4) {
   .kiosk {
-    padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
   }
 
   .kiosk__slide {
-    padding-bottom: clamp(64px, 12vmin, 112px);
-    scroll-padding-bottom: clamp(64px, 12vmin, 112px);
+    padding-bottom: clamp(28px, 6vmin, 64px);
+    scroll-padding-bottom: clamp(28px, 6vmin, 64px);
   }
 
   .kiosk__nav {
@@ -142,6 +142,77 @@
   box-shadow: var(--shadow-soft), 0 1px 0 #fff inset;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+.kiosk__playback {
+  position: fixed;
+  z-index: 20;
+  right: calc(clamp(12px, 2.2vmin, 28px) + env(safe-area-inset-right, 0px));
+  bottom: calc(clamp(16px, 2.2vw, 28px) + env(safe-area-inset-bottom, 0px));
+  transform: none;
+}
+
+.pb__toggle {
+  appearance: none;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-soft), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: color-mix(in srgb, var(--text) 86%, var(--accent) 14%);
+  border-radius: 999px;
+  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.pb__toggle:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--line));
+  background: #ffffff;
+}
+
+.pb__toggle:active {
+  transform: translateY(0);
+}
+
+.pb__toggle[aria-pressed='true'] {
+  color: var(--copper);
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  background: linear-gradient(145deg, rgba(0, 102, 255, 0.12), rgba(255, 255, 255, 0.96));
+}
+
+.pb__icon {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+}
+
+.pb__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.pb__label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+@media (max-aspect-ratio: 3/4) {
+  .kiosk__playback {
+    right: calc(clamp(10px, 2vmin, 20px) + env(safe-area-inset-right, 0px));
+    bottom: calc(clamp(10px, 2vmin, 20px) + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 .nav__arrow {

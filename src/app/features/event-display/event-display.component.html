@@ -80,6 +80,27 @@
     </button>
   </nav>
 
+  <button
+    type="button"
+    class="kiosk__playback pb__toggle"
+    (click)="togglePlay()"
+    [attr.aria-pressed]="isPlaying()"
+    [attr.aria-label]="isPlaying() ? 'Pause autoplay' : 'Play autoplay'"
+  >
+    <span class="pb__icon" aria-hidden="true">
+      @if (isPlaying()) {
+        <svg viewBox="0 0 24 24" fill="currentColor" focusable="false" aria-hidden="true">
+          <path d="M7 5h3v14H7V5zm7 0h3v14h-3V5z" />
+        </svg>
+      } @else {
+        <svg viewBox="0 0 24 24" fill="currentColor" focusable="false" aria-hidden="true">
+          <path d="M8 5v14l11-7L8 5z" />
+        </svg>
+      }
+    </span>
+    <span class="pb__label">{{ isPlaying() ? 'Pause' : 'Play' }}</span>
+  </button>
+
   <span class="sr-only">
     {{ data.branding.projectName }} showcase. Slide {{ sectionIndex() + 1 }} of {{ sectionCount() }}.
   </span>

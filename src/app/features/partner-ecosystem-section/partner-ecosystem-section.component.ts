@@ -21,10 +21,10 @@ export class PartnerEcosystemSectionComponent {
   readonly facilitatorName = this.d.branding.partnerName;
 
   readonly hubX = 50;
-  readonly hubY = 57;
+  readonly hubY = 52;
   readonly wireOriginY = 11;
   /** Larger orbit uses horizontal space on wide event screens */
-  readonly orbitRadius = 42.5;
+  readonly orbitRadius = 36;
 
   /** Bumps when the slide becomes active so staggered pops replay. */
   readonly satAnimEpoch = signal(0);
