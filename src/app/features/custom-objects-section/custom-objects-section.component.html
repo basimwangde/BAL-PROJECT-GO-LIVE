@@ -1,25 +1,88 @@
-<section class="co" aria-label="Custom object migration scale">
+<section class="co" [class.co--on]="isActive()" aria-label="Custom object migration scale">
   <div class="co__intro">
     <p class="story-kicker">Remediation scale</p>
     <h2 class="co__title story-display">Scale of remediation</h2>
     <div class="gold-rule co__rule"></div>
     <p class="co__lead">
-      A wall-sized statement of engineering volume — animated only while this slide is on screen.
+      Objects reviewed and handled across the program — counts animate when this slide is active.
     </p>
   </div>
 
-  <div class="co__grid">
-    @for (row of d.customObjectStats; track row.label; let i = $index) {
-      <article class="stat glass" [class.stat--total]="i === d.customObjectStats.length - 1">
-        <div class="stat__label">{{ row.label }}</div>
-        <div class="stat__value">
-          <app-animated-counter
-            [target]="row.value"
-            [isActive]="isActive()"
-            [durationMs]="i === d.customObjectStats.length - 1 ? 3200 : 2400"
-          />
-        </div>
-      </article>
-    }
+  <div class="co__panel">
+    <div class="co__grid">
+      @for (row of d.customObjectStats; track row.label; let i = $index) {
+        <article
+          class="stat"
+          [class.stat--total]="i === d.customObjectStats.length - 1"
+          [style.--si]="i"
+        >
+          <div class="stat__accent" aria-hidden="true"></div>
+          <div class="stat__top">
+            <div class="stat__icon" aria-hidden="true">
+              @switch (row.icon) {
+                @case ('report') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <path d="M14 2v6h6M8 13h8M8 17h6" />
+                  </svg>
+                }
+                @case ('functionModule') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+                    <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+                  </svg>
+                }
+                @case ('transaction') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="14" rx="2" />
+                    <path d="M7 15h.01M11 15h4" />
+                  </svg>
+                }
+                @case ('table') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <ellipse cx="12" cy="5" rx="9" ry="3" />
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                    <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
+                  </svg>
+                }
+                @case ('smartForm') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16v4H4zM4 12h10v8H4zM16 12h4v4h-4zM16 18h4v2h-4z" />
+                  </svg>
+                }
+                @case ('grandTotal') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7L12 17.8 5.7 21l2.3-7-6-4.6h7.6L12 2z" />
+                  </svg>
+                }
+                @default {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                  </svg>
+                }
+              }
+            </div>
+            <div class="stat__meta">
+              <span class="stat__label">{{ row.label }}</span>
+              @if (i < d.customObjectStats.length - 1) {
+                <span class="stat__chip">Object type</span>
+              } @else {
+                <span class="stat__chip stat__chip--total">Portfolio sum</span>
+              }
+            </div>
+          </div>
+          <div class="stat__value">
+            <app-animated-counter
+              [target]="row.value"
+              [isActive]="isActive()"
+              [durationMs]="i === d.customObjectStats.length - 1 ? 3200 : 2400"
+            />
+          </div>
+        </article>
+      }
+    </div>
   </div>
 </section>

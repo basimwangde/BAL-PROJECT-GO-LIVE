@@ -1,4 +1,5 @@
 import type { DisplaySection } from '../models/display-section.model';
+import type { DataImpactRow } from '../models/data-impact-row.model';
 import type { GalleryImage } from '../models/gallery-image.model';
 import type { ProjectStat } from '../models/project-stat.model';
 
@@ -49,7 +50,7 @@ export interface DisplayConfig {
   };
   timeline: Array<{ label: string; dateHint?: string; summary?: string }>;
   customObjectStats: ProjectStat[];
-  dataImpact: Array<{ label: string; from: string; to: string }>;
+  dataImpact: DataImpactRow[];
   /** Flat list: customer, implementation partner, then specialist partners (used by Ecosystem slide). */
   partners: string[];
   ecosystemSlide: {
@@ -132,7 +133,7 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     { id: 'partners', title: 'Ecosystem', durationMs: 13_800 },
     { id: 'timeline', title: 'The journey', durationMs: 10_500 },
     { id: 'customObjects', title: 'Scale of change', durationMs: 11_000 },
-    { id: 'dataImpact', title: 'Data impact', durationMs: 10_500 },
+    { id: 'dataImpact', title: 'Data simplification', durationMs: 10_500 },
     { id: 'gallery', title: 'Moments that matter', durationMs: 11_000 },
     { id: 'closing', title: 'Applause', durationMs: 10_500 }
   ],
@@ -174,17 +175,38 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     }
   ],
   customObjectStats: [
-    { label: 'Program (ABAP Report)', value: 5064 },
-    { label: 'Function module', value: 2779 },
-    { label: 'Transaction code', value: 1593 },
-    { label: 'Database table', value: 1158 },
-    { label: 'Smart Form', value: 286 },
-    { label: 'Grand total', value: 10880 }
+    { label: 'Program (ABAP Report)', value: 5064, icon: 'report' },
+    { label: 'Function module', value: 2779, icon: 'functionModule' },
+    { label: 'Transaction code', value: 1593, icon: 'transaction' },
+    { label: 'Database table', value: 1158, icon: 'table' },
+    { label: 'Smart Form', value: 286, icon: 'smartForm' },
+    { label: 'Grand total', value: 10880, icon: 'grandTotal' }
   ],
   dataImpact: [
-    { label: 'Material master', from: '85K (ECC)', to: '35K (S/4)' },
-    { label: 'Customer', from: '2.25 lacs (ECC)', to: '1.60 lacs (S/4)' },
-    { label: 'Vendor', from: '3.21 lacs (ECC)', to: '1.52 lacs (S/4)' }
+    {
+      label: 'Customer master',
+      from: '2.25 lacs (ECC)',
+      to: '1.60 lacs (S/4)',
+      eccRecords: 225_000,
+      s4Records: 160_000,
+      icon: 'customer'
+    },
+    {
+      label: 'Material master',
+      from: '85K (ECC)',
+      to: '35K (S/4)',
+      eccRecords: 85_000,
+      s4Records: 35_000,
+      icon: 'material'
+    },
+    {
+      label: 'Vendor master',
+      from: '3.21 lacs (ECC)',
+      to: '1.52 lacs (S/4)',
+      eccRecords: 321_000,
+      s4Records: 152_000,
+      icon: 'vendor'
+    }
   ],
   partners: [
     'Baramati Agro',

@@ -29,6 +29,8 @@
 
   --font-display: 'Fraunces', 'Georgia', 'Times New Roman', serif;
   --font-sans: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /** Large KPI / stats (tabular, sans — pairs with display titles) */
+  --font-kpi: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --shadow-deep: 0 28px 90px rgba(15, 45, 28, 0.12);
   --shadow-soft: 0 14px 44px rgba(15, 45, 28, 0.08);

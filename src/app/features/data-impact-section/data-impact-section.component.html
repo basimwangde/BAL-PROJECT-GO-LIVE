@@ -1,27 +1,85 @@
 <section class="impact" aria-label="Data simplification impact">
   <div class="impact__intro">
-    <p class="story-kicker">Data footprint</p>
+    <p class="story-kicker">Master data footprint</p>
     <h2 class="impact__title story-display">Data simplification</h2>
     <div class="gold-rule impact__rule"></div>
-    <p class="impact__lead">Fewer, cleaner master records — measurable reduction across Materials, Customer, and Vendor.</p>
+    <p class="impact__lead">
+      Customer, material, and vendor masters carry less volume on SAP S/4HANA after cleanse, de-duplication,
+      and org alignment — same business, leaner truth.
+    </p>
   </div>
 
-  <div class="impact__grid">
-    @for (row of d.dataImpact; track row.label) {
-      <article class="panel glass">
-        <div class="panel__label">{{ row.label }}</div>
-        <div class="panel__row">
-          <div class="panel__box">
-            <div class="panel__hint">Before · ECC</div>
-            <div class="panel__val story-display">{{ row.from }}</div>
+  <div class="impact__panel">
+    <div class="impact__grid">
+      @for (row of d.dataImpact; track row.label; let i = $index) {
+        <article class="dcard" [style.--di]="i">
+          <div class="dcard__accent" aria-hidden="true"></div>
+          <header class="dcard__head">
+            <div class="dcard__icon" aria-hidden="true">
+              @switch (row.icon) {
+                @case ('customer') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                  </svg>
+                }
+                @case ('material') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+                    <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+                  </svg>
+                }
+                @case ('vendor') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                    <path d="M9 22V12h6v10" />
+                  </svg>
+                }
+              }
+            </div>
+            <div class="dcard__titles">
+              <h3 class="dcard__label">{{ row.label }}</h3>
+              <p class="dcard__sub">ECC baseline → S/4HANA target</p>
+            </div>
+            <div class="dcard__badge" aria-label="Record reduction versus ECC">
+              <span class="dcard__badge-val">−{{ reductionPercent(row) }}%</span>
+              <span class="dcard__badge-hint">fewer records</span>
+            </div>
+          </header>
+
+          <div class="viz" role="group" [attr.aria-label]="row.label + ' comparison'">
+            <div class="viz__lane">
+              <div class="viz__lane-head">
+                <span class="viz__erp viz__erp--ecc">SAP ECC</span>
+                <span class="viz__amount viz__amount--ecc">{{ row.from }}</span>
+              </div>
+              <div class="viz__track" aria-hidden="true">
+                <div class="viz__fill viz__fill--ecc"></div>
+              </div>
+            </div>
+
+            <div class="viz__connector" aria-hidden="true">
+              <span class="viz__connector-chev"></span>
+            </div>
+
+            <div class="viz__lane">
+              <div class="viz__lane-head">
+                <span class="viz__erp viz__erp--s4">SAP S/4HANA</span>
+                <span class="viz__amount viz__amount--s4">{{ row.to }}</span>
+              </div>
+              <div class="viz__track viz__track--s4" aria-hidden="true">
+                <div class="viz__fill viz__fill--s4" [style.width.%]="s4BarPercent(row)"></div>
+              </div>
+              <div class="viz__scale" aria-hidden="true">
+                <span>0</span>
+                <span>Same scale as ECC bar</span>
+                <span>100%</span>
+              </div>
+            </div>
           </div>
-          <div class="panel__mid" aria-hidden="true"><span class="panel__chev"></span></div>
-          <div class="panel__box panel__box--after">
-            <div class="panel__hint">After · S/4</div>
-            <div class="panel__val story-display">{{ row.to }}</div>
-          </div>
-        </div>
-      </article>
-    }
+        </article>
+      }
+    </div>
   </div>
 </section>

@@ -1,5 +1,10 @@
 :host {
   display: inline-block;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
+  font-family: inherit;
+  font-weight: inherit;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
 }
