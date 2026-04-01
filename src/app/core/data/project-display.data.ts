@@ -96,7 +96,7 @@ const s4HighlightsSection: DisplayConfig['s4HighlightsSection'] = {
     'Project System',
     'Plant Maintenance',
     'COPA Redesign',
-    'Costing',
+    'Product Costing',
     'MRP',
     'Batch Management',
     'CPP Revamp',
