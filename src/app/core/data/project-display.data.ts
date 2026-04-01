@@ -47,13 +47,7 @@ export interface DisplayConfig {
     holdAfterLastBubbleMs: number;
     items: string[];
   };
-  timeline: Array<{ label: string; dateHint?: string }>;
-  technical: {
-    headline: string;
-    subheadline: string;
-    bullets: string[];
-    interfaces: string[];
-  };
+  timeline: Array<{ label: string; dateHint?: string; summary?: string }>;
   customObjectStats: ProjectStat[];
   dataImpact: Array<{ label: string; from: string; to: string }>;
   /** Flat list: customer, implementation partner, then specialist partners (used by Ecosystem slide). */
@@ -137,7 +131,6 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
     { id: 'snapshot', title: 'S/4HANA highlights', durationMs: snapshotSlideDurationMs },
     { id: 'partners', title: 'Ecosystem', durationMs: 13_800 },
     { id: 'timeline', title: 'The journey', durationMs: 10_500 },
-    { id: 'technical', title: 'Technical core', durationMs: 10_500 },
     { id: 'customObjects', title: 'Scale of change', durationMs: 11_000 },
     { id: 'dataImpact', title: 'Data impact', durationMs: 10_500 },
     { id: 'gallery', title: 'Moments that matter', durationMs: 11_000 },
@@ -145,36 +138,41 @@ export const PROJECT_DISPLAY_DATA: DisplayConfig = {
   ],
   s4HighlightsSection,
   timeline: [
-    { label: 'Kick-off', dateHint: 'Jun 2025' },
-    { label: 'Design / blueprint' },
-    { label: 'Build / realization' },
-    { label: 'Data cleansing & transformation' },
-    { label: 'Custom code remediation' },
-    { label: 'Testing & readiness' },
-    { label: 'Cutover' },
-    { label: 'Go-live', dateHint: 'Apr 2026' }
+    {
+      label: 'KICK-OFF',
+      dateHint: 'Jun 2025',
+      summary: 'Charter, governance, and joint teams aligned on scope and success measures.'
+    },
+    {
+      label: 'DESIGN / BLUEPRINT',
+      summary: 'Process fit, solution design, and a signed blueprint for S/4HANA.'
+    },
+    {
+      label: 'BUILD / REALIZATION',
+      summary: 'Configuration, extensions, and integrations brought together in the target landscape.'
+    },
+    {
+      label: 'DATA CLEANSING & TRANSFORMATION WITH FUTUROOT',
+      summary: 'Rule-based cleansing and re-org-aware loads through FUTUROOT into S/4.'
+    },
+    {
+      label: 'CUSTOM CODE REMEDIATION',
+      summary: 'ABAP and interfaces adjusted for compatibility and clean S/4 operations.'
+    },
+    {
+      label: 'TESTING & READINESS',
+      summary: 'End-to-end cycles, cutover rehearsal, and operational readiness sign-off.'
+    },
+    {
+      label: 'CUTOVER',
+      summary: 'Final sync, freeze, and controlled switch to the new digital core.'
+    },
+    {
+      label: 'GO-LIVE',
+      dateHint: 'Apr 2026',
+      summary: 'Parivartan live on SAP S/4HANA — business on the new platform.'
+    }
   ],
-  technical: {
-    headline: 'Technical heartbeat of the program',
-    subheadline: 'A controlled move: cleanse, transform, reconcile, integrate — then cut over with confidence.',
-    bullets: [
-      'Landscape: SAP ECC to SAP S/4HANA on RISE (2023 FPS02)',
-      'Data migration: cleansed & transformed via FUTUROOT, reconciliation & cutover',
-      'Rule-based cleansing through the FUTUROOT ETL engine',
-      'Re-org-aware transformation aligned to consolidated company codes'
-    ],
-    interfaces: [
-      'LogicalDNA',
-      'Zencon',
-      'QA/QC',
-      'SBI/IDBI',
-      'BestMix',
-      'Raintree',
-      'Procol',
-      'Cashflo',
-      'Power BI'
-    ]
-  },
   customObjectStats: [
     { label: 'Program (ABAP Report)', value: 5064 },
     { label: 'Function module', value: 2779 },

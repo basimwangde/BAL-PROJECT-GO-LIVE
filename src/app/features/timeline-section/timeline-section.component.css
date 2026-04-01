@@ -2,8 +2,9 @@
   min-height: 100%;
   padding: var(--pad);
   display: grid;
-  gap: clamp(20px, 2.4vw, 36px);
+  gap: clamp(10px, 1.8vmin, 28px);
   align-content: start;
+  box-sizing: border-box;
 }
 
 .tl__title {
@@ -12,116 +13,384 @@
 }
 
 .tl__rule {
-  margin: clamp(14px, 1.6vw, 22px) 0;
+  margin: clamp(8px, 1.2vmin, 18px) 0;
   max-width: 240px;
 }
 
 .tl__lead {
   margin: 0;
-  font-size: var(--body);
+  font-size: clamp(0.85rem, 1.1vmin + 0.55rem, var(--body));
+  line-height: 1.35;
   color: var(--cream-muted);
   max-width: 50ch;
 }
 
-.tl__track {
-  list-style: none;
-  margin: clamp(10px, 1.2vw, 18px) 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: clamp(8px, 1vw, 14px);
+.tl__journey {
   position: relative;
+  margin: 0;
+  min-height: 0;
+  padding: clamp(8px, 1.4vmin, 18px) clamp(10px, 1.6vmin, 18px);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse 120% 80% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 55%),
+    radial-gradient(ellipse 90% 60% at 0% 100%, color-mix(in srgb, var(--cool) 10%, transparent), transparent 50%),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--panel) 92%, var(--accent)),
+      color-mix(in srgb, var(--panel-muted) 88%, transparent)
+    );
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  box-shadow: var(--shadow-soft);
+  overflow: visible;
 }
 
-@media (max-width: 1200px) {
-  .tl__track {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 720px) {
-  .tl__track {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.tl__track::before {
+.tl__journey::before {
   content: '';
   position: absolute;
-  left: 4%;
-  right: 4%;
-  top: 28px;
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(27, 127, 74, 0.28) 12%,
-    rgba(74, 143, 106, 0.22) 50%,
-    rgba(27, 127, 74, 0.28) 88%,
-    transparent
+  inset: 0;
+  border-radius: inherit;
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--accent) 14%, transparent) 1px,
+    transparent 1px
   );
-  transform-origin: left;
-  transform: scaleX(0);
+  background-size: 14px 14px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.tl__track--on::before {
-  animation: tl-line 1.35s cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
+.tl__confetti {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
 }
 
-@keyframes tl-line {
-  to {
-    transform: scaleX(1);
-  }
+/* Full-viewport burst when go-live fires (above kiosk UI) */
+.tl__confetti.tl__confetti--fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none;
+  max-height: none;
+  z-index: 10050;
 }
 
-.milestone {
+/* —— Standard vertical timeline —— */
+.tl__wrap {
+  --tl-gutter: clamp(36px, 5.5vmin + 12px, 56px);
   position: relative;
+  min-height: min-content;
+  z-index: 1;
+}
+
+.tl__rail {
+  position: absolute;
+  left: calc(var(--tl-gutter) / 2 - 1.5px);
+  top: clamp(10px, 1.6vmin, 22px);
+  bottom: clamp(8px, 1.4vmin, 18px);
+  width: 3px;
+  border-radius: 999px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tl__rail-bg {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--line) 92%, var(--accent));
+  opacity: 0.55;
+}
+
+.tl__rail-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0%;
+  background: linear-gradient(180deg, var(--accent-soft), var(--accent));
+  border-radius: 999px;
+  transition: height 0.55s cubic-bezier(0.2, 0.85, 0.2, 1);
+}
+
+.tl__timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.tl__item {
   display: grid;
-  justify-items: center;
-  gap: 12px;
-  text-align: center;
-  padding-top: 6px;
-  opacity: 0.28;
-  transform: translateY(16px);
+  grid-template-columns: var(--tl-gutter) minmax(0, 1fr);
+  gap: clamp(8px, 1.2vmin, 16px);
+  align-items: start;
+  padding-bottom: clamp(2px, 0.75vmin, 14px);
+  opacity: 0.34;
+  transform: translateX(-4px);
+  filter: grayscale(0.3);
+  transition:
+    opacity 0.4s cubic-bezier(0.2, 0.85, 0.2, 1),
+    transform 0.4s cubic-bezier(0.2, 0.85, 0.2, 1),
+    filter 0.35s ease;
+  transition-delay: calc(0.03s * var(--i));
 }
 
-.tl__track--on .milestone {
-  animation: mile 0.7s cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
-  animation-delay: calc(0.07s * var(--i));
+.tl__item:last-child {
+  padding-bottom: 0;
 }
 
-@keyframes mile {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.tl__item--lit {
+  opacity: 1;
+  transform: translateX(0);
+  filter: grayscale(0);
 }
 
-.milestone__num {
-  width: clamp(52px, 5vw, 68px);
-  height: clamp(52px, 5vw, 68px);
-  border-radius: 18px;
+.tl__marker-cell {
+  display: flex;
+  justify-content: center;
+  padding-top: 0;
+}
+
+.tl__marker {
+  position: relative;
+  width: clamp(32px, 4.2vmin + 10px, 46px);
+  height: clamp(32px, 4.2vmin + 10px, 46px);
+  border-radius: 50%;
   display: grid;
   place-items: center;
+  flex-shrink: 0;
   font-family: var(--font-display);
-  font-size: clamp(20px, 1.8vw, 26px);
+  font-size: clamp(13px, 1.1vmin + 0.4rem, 17px);
   font-weight: 600;
   color: var(--accent);
   background: linear-gradient(145deg, #ffffff, var(--panel-muted));
-  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
-  box-shadow: 0 12px 28px rgba(27, 127, 74, 0.1);
+  border: 2px solid color-mix(in srgb, var(--line) 80%, var(--accent));
+  box-shadow:
+    0 6px 18px rgba(27, 127, 74, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+  transition:
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+  z-index: 1;
 }
 
-.milestone__label {
-  font-size: clamp(14px, 1.15vw, 19px);
+.tl__marker--lit {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  background: linear-gradient(155deg, #ffffff, color-mix(in srgb, var(--panel-muted) 85%, var(--accent)));
+}
+
+.tl__marker--current {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent),
+    0 10px 28px rgba(27, 127, 74, 0.2);
+  animation: tl-marker-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes tl-marker-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent),
+      0 10px 28px rgba(27, 127, 74, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--accent) 50%, transparent),
+      0 14px 34px rgba(27, 127, 74, 0.26);
+  }
+}
+
+.tl__marker-icon {
+  position: absolute;
+  inset: 6px;
+  display: grid;
+  place-items: center;
+  color: color-mix(in srgb, var(--accent) 60%, var(--text-muted));
+  opacity: 0;
+  transform: scale(0.88);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.2, 0.85, 0.2, 1);
+}
+
+.tl__marker-icon svg {
+  width: 58%;
+  height: 58%;
+}
+
+.tl__marker--lit .tl__marker-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.tl__marker--lit .tl__marker-num {
+  opacity: 0;
+  transform: scale(0.65);
+}
+
+.tl__marker-num {
+  position: relative;
+  z-index: 1;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.tl__content {
+  min-width: 0;
+  padding-top: 0;
+}
+
+.tl__content-inner {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: clamp(10px, 1.8vmin, 18px);
+  padding: clamp(8px, 1.1vmin, 14px) clamp(10px, 1.4vmin, 16px);
+  padding-left: calc(10px + 5px);
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--panel) 96%, var(--accent)),
+    var(--panel) 48%,
+    color-mix(in srgb, var(--panel) 94%, var(--panel-muted))
+  );
+  border: 1px solid color-mix(in srgb, var(--line) 65%, transparent);
+  box-shadow:
+    0 4px 18px rgba(15, 45, 28, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.65) inset;
+  transition:
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.tl__content-inner::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  border-radius: 0 6px 6px 0;
+  background: linear-gradient(180deg, var(--accent-soft), var(--accent));
+  opacity: 0.28;
+  transition: opacity 0.35s ease;
+}
+
+.tl__item--lit .tl__content-inner::before {
+  opacity: 0.85;
+}
+
+.tl__item--lit .tl__content-inner {
+  background: linear-gradient(
+    125deg,
+    var(--panel) 0%,
+    color-mix(in srgb, var(--panel) 97%, var(--accent)) 100%
+  );
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+}
+
+.tl__item--current .tl__content-inner {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+  box-shadow:
+    0 10px 28px rgba(27, 127, 74, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.75) inset;
+}
+
+.tl__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.tl__aside {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  text-align: right;
+  padding-left: clamp(8px, 1.2vmin, 14px);
+  margin-left: auto;
+  border-left: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  min-width: clamp(52px, 12vmin, 76px);
+}
+
+.tl__index {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4.2vmin, 2.65rem);
   font-weight: 600;
-  line-height: 1.18;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: color-mix(in srgb, var(--accent) 28%, var(--text-muted));
+  opacity: 0.9;
+}
+
+.tl__item--lit .tl__index {
+  color: color-mix(in srgb, var(--accent) 55%, var(--text));
+}
+
+.tl__phase {
+  display: block;
+  margin-top: 5px;
+  font-size: clamp(0.6rem, 0.5vmin + 0.52rem, 0.72rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  white-space: nowrap;
+}
+
+.tl__step {
+  display: block;
+  font-size: clamp(0.65rem, 0.55vmin + 0.55rem, var(--small));
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.tl__label {
+  font-size: clamp(0.8rem, 0.85vmin + 0.55rem, 1.05rem);
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--cream-soft);
 }
 
-.milestone__hint {
-  margin-top: 6px;
-  font-size: var(--small);
-  color: var(--cream-muted);
+.tl__hint {
+  margin-top: 4px;
+  font-size: clamp(0.65rem, 0.5vmin + 0.55rem, var(--small));
+  line-height: 1.25;
+  color: color-mix(in srgb, var(--accent) 35%, var(--cream-muted));
+  font-weight: 600;
+}
+
+.tl__summary {
+  margin: 8px 0 0;
+  padding: 0;
+  font-size: clamp(0.72rem, 0.55vmin + 0.58rem, 0.88rem);
+  line-height: 1.45;
+  color: var(--text-muted);
+  max-width: 52ch;
+}
+
+/* Extra compaction on short viewports so all 8 steps stay visible without inner scroll */
+@media (max-height: 780px) {
+  .tl__title {
+    font-size: clamp(1.35rem, 4.2vmin, 2.5rem);
+    margin-top: 4px;
+  }
+
+  .tl__item {
+    padding-bottom: clamp(0px, 0.5vmin, 8px);
+  }
 }

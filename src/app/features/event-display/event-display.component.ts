@@ -4,7 +4,6 @@ import type { DisplaySectionId } from '../../core/models/display-section.model';
 import { HeroSectionComponent } from '../hero-section/hero-section.component';
 import { TransformationSnapshotComponent } from '../transformation-snapshot/transformation-snapshot.component';
 import { TimelineSectionComponent } from '../timeline-section/timeline-section.component';
-import { TechnicalSectionComponent } from '../technical-section/technical-section.component';
 import { CustomObjectsSectionComponent } from '../custom-objects-section/custom-objects-section.component';
 import { DataImpactSectionComponent } from '../data-impact-section/data-impact-section.component';
 import { PartnerEcosystemSectionComponent } from '../partner-ecosystem-section/partner-ecosystem-section.component';
@@ -18,7 +17,6 @@ import { ClosingSectionComponent } from '../closing-section/closing-section.comp
     HeroSectionComponent,
     TransformationSnapshotComponent,
     TimelineSectionComponent,
-    TechnicalSectionComponent,
     CustomObjectsSectionComponent,
     DataImpactSectionComponent,
     PartnerEcosystemSectionComponent,

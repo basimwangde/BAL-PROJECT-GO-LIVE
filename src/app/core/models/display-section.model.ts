@@ -2,7 +2,6 @@ export type DisplaySectionId =
   | 'hero'
   | 'snapshot'
   | 'timeline'
-  | 'technical'
   | 'customObjects'
   | 'dataImpact'
   | 'partners'
